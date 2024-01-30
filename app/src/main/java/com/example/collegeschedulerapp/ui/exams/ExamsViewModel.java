@@ -1,16 +1,16 @@
-package com.example.collegeschedulerapp.ui.home;
+package com.example.collegeschedulerapp.ui.exams;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class ExamsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public ExamsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is Exams fragment");
     }
 
     public LiveData<String> getText() {

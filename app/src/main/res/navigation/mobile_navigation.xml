@@ -3,29 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_todo">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.collegeschedulerapp.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_todo"
+        android:name="com.example.collegeschedulerapp.ui.todo.TodoFragment"
+        android:label="@string/title_todo"
+        tools:layout="@layout/fragment_todo" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.collegeschedulerapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_exams"
+        android:name="com.example.collegeschedulerapp.ui.exams.ExamsFragment"
+        android:label="@string/title_exams"
+        tools:layout="@layout/fragment_exams" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.collegeschedulerapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
-
+        android:id="@+id/navigation_assignments"
+        android:name="com.example.collegeschedulerapp.ui.assignments.AssignmentsFragment"
+        android:label="@string/title_assignments"
+        tools:layout="@layout/fragment_assignments" />
     <fragment
         android:id="@+id/navigation_courses"
         android:name="com.example.collegeschedulerapp.ui.courses.CoursesFragment"
         android:label="@string/title_courses"
         tools:layout="@layout/fragment_courses" />
+
+
 </navigation>

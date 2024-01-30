@@ -1,4 +1,4 @@
-package com.example.collegeschedulerapp.ui.courses;
+package com.example.collegeschedulerapp.ui.exams;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.collegeschedulerapp.databinding.FragmentTodoBinding;
 
-public class CoursesFragment extends Fragment {
+public class ExamsFragment extends Fragment {
 
     private FragmentTodoBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        CoursesViewModel todoViewModel =
-                new ViewModelProvider(this).get(CoursesViewModel.class);
+        ExamsViewModel todoViewModel =
+                new ViewModelProvider(this).get(ExamsViewModel.class);
 
         binding = FragmentTodoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
