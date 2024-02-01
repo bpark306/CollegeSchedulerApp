@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#1c1c1e</color>
     <color name="secondary">#dee2e6</color>
+    <color name="complementary">#212121</color>
+    <color name="box">#424242</color>
 </resources>

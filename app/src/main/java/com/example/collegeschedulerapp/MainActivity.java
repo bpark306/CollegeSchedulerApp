@@ -1,12 +1,13 @@
 package com.example.collegeschedulerapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import com.example.collegeschedulerapp.internalfiles.Course;
+import com.google.android.libraries.places.api.Places;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -14,29 +15,29 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.collegeschedulerapp.databinding.ActivityMainBinding;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
+
 
     private ActivityMainBinding binding;
 
     private ExtendedFloatingActionButton addButton;
-
-    private FloatingActionButton courseButton;
-    private FloatingActionButton examButton;
-    private FloatingActionButton assignmentButton;
-
-
-
-
-    private TextView courseButtonText;
-    private TextView examButtonText;
-
-    private TextView assignmentButtonText;
-
-
+    private FloatingActionButton courseButton,examButton, assignmentButton;
+    private TextView courseButtonText, examButtonText, assignmentButtonText;
     private boolean isAllFABVisble;
+
+    ArrayList<Course> myCourses;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -57,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
+        myCourses = new ArrayList<>(10);
+
+
+        // FLoating Button Code
         addButton = findViewById(R.id.add_btn);
         courseButton = findViewById(R.id.add_course);
         examButton = findViewById(R.id.add_exam);
@@ -75,8 +80,18 @@ public class MainActivity extends AppCompatActivity {
         assignmentButtonText.setVisibility(View.GONE);
 
         isAllFABVisble = false;
-
         addButton.shrink();
+
+
+        courseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addButton.callOnClick();
+                CoursesDialogFragment courseDialogFragmenet = new CoursesDialogFragment(MainActivity.this);
+                courseDialogFragmenet.show(getSupportFragmentManager(), "Yipiee");
+            }
+        });
+
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -107,16 +122,5 @@ public class MainActivity extends AppCompatActivity {
                 isAllFABVisble = !isAllFABVisble;
             }
         });
-
-
-
-
-
     }
-
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
-    }
-
 }
