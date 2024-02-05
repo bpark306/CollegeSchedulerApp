@@ -22,6 +22,7 @@
         android:name="com.example.collegeschedulerapp.ui.assignments.AssignmentsFragment"
         android:label="@string/title_assignments"
         tools:layout="@layout/fragment_assignments" />
+
     <fragment
         android:id="@+id/navigation_courses"
         android:name="com.example.collegeschedulerapp.ui.courses.CoursesFragment"

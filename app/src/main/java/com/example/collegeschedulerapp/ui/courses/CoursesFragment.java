@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.collegeschedulerapp.databinding.FragmentTodoBinding;
-
+import com.alamkanak.weekview.MonthLoader;
+import com.alamkanak.weekview.WeekView;
+import com.example.collegeschedulerapp.databinding.FragmentCoursesBinding;
+import com.example.collegeschedulerapp.CoursesViewModel;
 public class CoursesFragment extends Fragment {
 
-    private FragmentTodoBinding binding;
+    private FragmentCoursesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         CoursesViewModel todoViewModel =
                 new ViewModelProvider(this).get(CoursesViewModel.class);
 
-        binding = FragmentTodoBinding.inflate(inflater, container, false);
+        binding = FragmentCoursesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textTodo;
-        todoViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

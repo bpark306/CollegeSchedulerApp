@@ -5,6 +5,8 @@
     <string name="title_exams">Exams</string>
     <string name="title_courses">Courses</string>
     <string name="floating_button">FloatingButton</string>
+    <string name="select">Select Course</string>
+
 
 
     <string-array name="planets_array">

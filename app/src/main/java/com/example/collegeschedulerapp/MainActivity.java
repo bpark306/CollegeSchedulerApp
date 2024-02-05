@@ -1,8 +1,17 @@
 package com.example.collegeschedulerapp;
 
+import static android.app.PendingIntent.getActivity;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.collegeschedulerapp.internalfiles.Course;
@@ -46,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().hide();
 
 
         // Passing each menu ID as a set of Ids because each
@@ -83,12 +93,26 @@ public class MainActivity extends AppCompatActivity {
         addButton.shrink();
 
 
+
+
+
         courseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addButton.callOnClick();
                 CoursesDialogFragment courseDialogFragmenet = new CoursesDialogFragment(MainActivity.this);
+
                 courseDialogFragmenet.show(getSupportFragmentManager(), "Yipiee");
+
+            }
+        });
+
+        assignmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addButton.callOnClick();
+                AssignmentsDialogFragment assignmentsDialogFragment = new AssignmentsDialogFragment(MainActivity.this);
+                assignmentsDialogFragment.show(getSupportFragmentManager(), "Hiya");
             }
         });
 

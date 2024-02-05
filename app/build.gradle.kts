@@ -33,12 +33,15 @@ android {
 }
 
 dependencies {
-
+// Add this module to use WeekView with the Java 8 Date/Time API. This module
+// uses core library desugaring, making it available on API 21 and above.
+    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.github.alamkanak:android-week-view:1.2.6")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.navigation:navigation-fragment:2.7.6")
     implementation("androidx.navigation:navigation-ui:2.7.6")
     testImplementation("junit:junit:4.13.2")

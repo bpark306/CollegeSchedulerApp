@@ -14,13 +14,6 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
-    </style>
-
-    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
 
 
     <style name="Widget.Button.Toggle" parent="android:Widget">
@@ -31,5 +24,6 @@
         <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
         <item name="android:textColor">@drawable/toggle_text_color</item>
     </style>
+
 
 </resources>
