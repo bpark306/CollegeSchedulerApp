@@ -2,6 +2,7 @@ package com.example.collegeschedulerapp.internalfiles;
 
 import android.widget.Adapter;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
@@ -12,34 +13,37 @@ public class Assignment implements Comparable<Assignment> {
 
     String name;
     Date dueDateTime;
-    boolean completeted;
-    String courseName;
+    boolean completed;
+    Course course;
 
-    public boolean isCompleteted() {
-        return completeted;
+    public boolean isCompleted() {
+        return completed;
     }
     public String getName() {
         return name;
     }
 
 
-    public Assignment(String name, Date dueDateTime, boolean completeted, String courseName) {
+    public Assignment(String name, Date dueDateTime, boolean completed, Course course) {
         this.name = name;
         this.dueDateTime = dueDateTime;
-        this.completeted = completeted;
-        this.courseName = courseName;
+        this.completed = completed;
+        this.course = new Course(course.name);
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+
+
+    public String getTimeDateDueString() {
+
+        SimpleDateFormat dateForm = new SimpleDateFormat("EEE, MMM yy");
+        SimpleDateFormat timeForm = new SimpleDateFormat("h:mm a");
+
+
+        return "Due on " + dateForm.format(dueDateTime) + " at " + timeForm.format(dueDateTime);
     }
 
-    public Date getTimeDateDue() {
-        return dueDateTime;
-    }
-
-    public String getCourseName() {
-        return courseName;
+    public Course getCourse() {
+        return course;
     }
 
 
@@ -47,5 +51,7 @@ public class Assignment implements Comparable<Assignment> {
     public int compareTo(Assignment o) {
         return this.dueDateTime.compareTo(o.dueDateTime);
     }
+
+
 }
 

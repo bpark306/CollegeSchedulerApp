@@ -4,19 +4,14 @@ import static android.app.PendingIntent.getActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.collegeschedulerapp.BottomSheetDialog.AssignmentsDialogFragment;
+import com.example.collegeschedulerapp.BottomSheetDialog.CoursesDialogFragment;
 import com.example.collegeschedulerapp.internalfiles.Course;
-import com.google.android.libraries.places.api.Places;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -24,15 +19,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.collegeschedulerapp.databinding.ActivityMainBinding;
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
 
-
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -69,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         myCourses = new ArrayList<>(10);
+
 
 
         // FLoating Button Code
@@ -101,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addButton.callOnClick();
                 CoursesDialogFragment courseDialogFragmenet = new CoursesDialogFragment(MainActivity.this);
-
                 courseDialogFragmenet.show(getSupportFragmentManager(), "Yipiee");
 
             }

@@ -25,6 +25,11 @@ public class Course {
         return name;
     }
 
+    public boolean equals(Course obj) {
+        return this.name.equals(obj.name);
+
+    }
+
 
 
 }

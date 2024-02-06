@@ -3,19 +3,20 @@
 
     <item
         android:id="@+id/navigation_todo"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/fact_check"
         android:title="@string/title_todo" />
+
     <item
         android:id="@+id/navigation_assignments"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/stylus_note"
         android:title="@string/title_assignments" />
     <item
         android:id="@+id/navigation_exams"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/release_alert"
         android:title="@string/title_exams" />
     <item
     android:id="@+id/navigation_courses"
-    android:icon="@drawable/ic_home_black_24dp"
+    android:icon="@drawable/calendar_add_on"
     android:title="@string/title_courses" />
 
 

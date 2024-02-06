@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/complementary"
-    android:orientation="vertical"
-    tools:context=".ui.assignments.AssignmentsFragment">
-
-
+    android:id="@+id/swipe_refresh"
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/complementary"
+        android:orientation="vertical"
+        tools:context=".ui.assignments.AssignmentsFragment">
 
     <Switch
         android:background="@drawable/dialog_box"
@@ -25,6 +27,5 @@
         tools:listitem="@layout/assignemnts_list"
         android:nestedScrollingEnabled="true">
     </androidx.recyclerview.widget.RecyclerView>
-
-
-</LinearLayout>
+    </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

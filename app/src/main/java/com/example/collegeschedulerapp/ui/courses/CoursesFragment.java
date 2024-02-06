@@ -4,16 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.alamkanak.weekview.MonthLoader;
-import com.alamkanak.weekview.WeekView;
 import com.example.collegeschedulerapp.databinding.FragmentCoursesBinding;
-import com.example.collegeschedulerapp.CoursesViewModel;
+
 public class CoursesFragment extends Fragment {
 
     private FragmentCoursesBinding binding;

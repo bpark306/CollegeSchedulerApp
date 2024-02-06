@@ -56,7 +56,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             //Swipe Right Action
 
 
-            adapter.editItem(position);
+            adapter.sendToDo(position);
 
         }
     }
@@ -72,10 +72,10 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         int backgroundCornerOffset = 20;
 
         if (dX > 0) {
-            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.baseline_add_24);
+            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.delete_sweep);
             background = new ColorDrawable(Color.RED);
         } else {
-            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.baseline_add_24);
+            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.add_task_swipe);
             background = new ColorDrawable(Color.BLUE);
         }
 

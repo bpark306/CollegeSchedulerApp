@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_box"
-    android:layout_margin="10dp"
+    android:layout_marginTop="9dp"
+    android:layout_marginRight="9dp"
+    android:layout_marginLeft="9dp"
     android:orientation="horizontal">
 
 
@@ -13,7 +15,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
+        android:layout_marginVertical="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/edit_assignment_button"
@@ -55,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/baseline_add_24"
+        android:src="@drawable/more_vert"
         android:tint="@color/textColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"

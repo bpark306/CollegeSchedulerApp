@@ -1,4 +1,4 @@
-package com.example.collegeschedulerapp;
+package com.example.collegeschedulerapp.BottomSheetDialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -36,15 +36,20 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 
 
 import com.example.collegeschedulerapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.sql.Time;
@@ -53,12 +58,11 @@ import java.util.Arrays;
 
 public class CoursesDialogFragment extends BottomSheetDialogFragment {
 
-    private BottomSheetDialog courseDialog;
+
     ArrayList<Course> myCourses;
 
     private Button addCourseButton, cancelCourseButton, startTimeButton, endTimeButton, locationPickerButton;
     private TextInputLayout courseName, courseSection, courseInstructor;
-    int startHour, startMinute, endHour, endMinute;
     Context context;
     BottomSheetBehavior<View> bottomSheetBehavior;
 
@@ -227,6 +231,7 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
         editor.putString("my courses", json);
         editor.apply();
     }
+
 
 
 
