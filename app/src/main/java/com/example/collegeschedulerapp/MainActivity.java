@@ -4,25 +4,35 @@ import static android.app.PendingIntent.getActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.collegeschedulerapp.BottomSheetDialog.AssignmentsDialogFragment;
 import com.example.collegeschedulerapp.BottomSheetDialog.CoursesDialogFragment;
+import com.example.collegeschedulerapp.BottomSheetDialog.ExamsDialogFragment;
 import com.example.collegeschedulerapp.internalfiles.Course;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.collegeschedulerapp.databinding.ActivityMainBinding;
+import com.example.collegeschedulerapp.internalfiles.RecyclerViewInterfaceExam;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.blurry.Blurry;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
+
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -105,7 +116,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        examButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addButton.callOnClick();
+                ExamsDialogFragment examsDialogFragment = new ExamsDialogFragment(MainActivity.this);
+                examsDialogFragment.show(getSupportFragmentManager(), "Nooo");
+            }
+        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                     addButton.extend();
                 } else {
-
+                    addButton.shrink();
                     courseButton.setVisibility(View.GONE);
                     examButton.setVisibility(View.GONE);
                     assignmentButton.setVisibility(View.GONE);
@@ -130,10 +148,43 @@ public class MainActivity extends AppCompatActivity {
                     examButtonText.setVisibility(View.GONE);
                     assignmentButtonText.setVisibility(View.GONE);
 
-                    addButton.shrink();
                 }
                 isAllFABVisble = !isAllFABVisble;
             }
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event){
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (addButton.isExtended()) {
+
+                Rect outCourse = new Rect();
+                Rect outAssignment = new Rect();
+                Rect outExam = new Rect();
+
+                courseButton.getGlobalVisibleRect(outCourse);
+                assignmentButton.getGlobalVisibleRect(outAssignment);
+                examButton.getGlobalVisibleRect(outExam);
+
+
+                if(!outCourse.contains((int)event.getRawX(), (int)event.getRawY())
+                        && !outAssignment.contains((int)event.getRawX(), (int)event.getRawY())
+                        && !outExam.contains((int)event.getRawX(), (int)event.getRawY())) {
+
+                    addButton.callOnClick();
+                    return false;
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.filter_by_menu, menu);
+        return true;
     }
 }

@@ -32,6 +32,9 @@ public class Assignment implements Comparable<Assignment> {
     }
 
 
+    public Date getDueDateTime() {
+        return dueDateTime;
+    }
 
     public String getTimeDateDueString() {
 

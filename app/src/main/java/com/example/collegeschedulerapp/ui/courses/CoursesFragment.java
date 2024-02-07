@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.collegeschedulerapp.databinding.FragmentCoursesBinding;
 
+
+/// FRAGMENT FOR CALENDER WEEK VIEW
 public class CoursesFragment extends Fragment {
 
     private FragmentCoursesBinding binding;

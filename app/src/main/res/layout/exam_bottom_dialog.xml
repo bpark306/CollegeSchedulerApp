@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/course_bottom_sheet"
+    android:id="@+id/exam_bottom_sheet"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog_box"
-    android:backgroundTint="@color/complementary">
+    android:backgroundTint="@color/complementary"
+    android:background="@drawable/dialog_box">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,26 +18,26 @@
         android:orientation="horizontal">
 
 
-
         <Button
-            android:id="@+id/cancel_course_button"
+            android:id="@+id/cancel_exam_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:clickable="true"
             android:focusable="true"
-            android:textStyle="bold"
-            android:background="@android:color/transparent"
             android:outlineSpotShadowColor="@android:color/transparent"
             android:text="Cancel"
             android:textColor="@color/textColor"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/exam_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Course"
+            android:text="New Exam"
             android:textColor="@color/textColor"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -46,17 +46,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/add_course_button"
+            android:id="@+id/add_exam_button"
             android:layout_width="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-
             android:layout_height="wrap_content"
             android:backgroundTint="@color/complementary"
+
+            android:clickable="true"
+            android:focusable="true"
             android:outlineSpotShadowColor="@android:color/transparent"
             android:text="ADD"
-            android:textStyle="bold"
             android:textColor="@color/textColor"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,84 +72,58 @@
         android:layout_margin="10sp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/course_name"
+            android:id="@+id/exam_name"
             app:boxStrokeColor="@color/textColor"
             android:layout_width="match_parent"
             app:hintTextColor="@color/textColor"
             android:textColorHint="@color/textColor"
             android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:textColor="@color/textColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
-            android:maxLines="1"
-            android:minHeight="60dp"
-            android:padding="10dp"
-            android:hint="Course Name"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/course_section"
-            android:layout_width="match_parent"
-            app:hintTextColor="@color/textColor"
-            android:textColorHint="@color/textColor"
-            android:textColor="@color/textColor"
-            android:layout_height="match_parent">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:textColor="@color/textColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:backgroundTint="@android:color/transparent"
-                android:hint="Course Section"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:maxLines="1"
                 android:minHeight="60dp"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:hint="Exam Name"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:background="@drawable/dialog_box"
         android:layout_height="wrap_content"
+        android:background="@drawable/dialog_box"
         android:padding="5sp"
         android:layout_margin="10sp">
 
-
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/course_instructor"
+            android:id="@+id/assocciated_course_exam"
             android:layout_width="match_parent"
-            app:hintTextColor="@color/textColor"
-            android:textColorHint="@color/textColor"
-            android:textColor="@color/textColor"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:hint="@string/select">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:textColor="@color/textColor"
+            <AutoCompleteTextView
+                android:id="@+id/autocomplete_course_exam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:backgroundTint="@android:color/transparent"
-                android:hint="Course Instructor"
-                android:maxLines="1"
-                android:minHeight="60dp"
-                android:padding="10dp"/>
+                android:inputType="none"/>
+
+
 
         </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:background="@drawable/dialog_box"
@@ -158,28 +132,6 @@
         android:gravity="center"
         android:layout_margin="10sp"
         android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Meeting Days &amp; Time "
-            android:textColor="@color/textColor"
-            android:textSize="18dp"
-
-            android:paddingLeft="10sp"
-            android:paddingRight="10sp"
-            android:paddingTop="15sp"
-            android:paddingBottom="15sp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <include
-            android:id="@+id/daypicker"
-            layout="@layout/day_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -192,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
-                android:text="Start Time"
+                android:text="Exam Time"
                 android:textColor="@color/textColor"
                 android:textSize="18dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -200,19 +152,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/start_time_button"
+                android:id="@+id/exam_time_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/time_bg"
                 android:textColor="@color/textColor"
-                android:text="12:00 pm"
+                android:text="11:59 am"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.466"
                 app:layout_constraintStart_toEndOf="@+id/textView3"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -227,19 +178,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
-                android:text="End Time"
+                android:text="Exam Date"
                 android:textColor="@color/textColor"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/end_time_button"
+                android:id="@+id/exam_date_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/time_bg"
-                android:text="12:00 pm"
+                android:text="mm/dd/yy"
                 android:textColor="@color/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -250,12 +201,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
     </LinearLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/search_container"
+        android:id="@+id/search_container_exam"
         android:orientation="vertical"
         android:background="@drawable/dialog_box"
         android:layout_width="match_parent"
@@ -265,7 +215,7 @@
         android:layout_height="wrap_content">
 
         <fragment
-            android:id="@+id/autocomplete_fragment"
+            android:id="@+id/autocomplete_fragment_exam"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -274,7 +224,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/room_number"
+            android:id="@+id/room_number_exam"
             app:boxStrokeColor="@color/textColor"
             android:layout_width="match_parent"
             app:hintTextColor="@color/textColor"
@@ -285,10 +235,11 @@
                 android:textColor="@color/textColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
+                android:paddingBottom="20dp"
                 android:maxLines="1"
                 android:minHeight="60dp"
                 android:padding="10dp"

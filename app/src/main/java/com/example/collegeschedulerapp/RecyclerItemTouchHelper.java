@@ -14,14 +14,21 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegeschedulerapp.Adapter.AssignmentAdapter;
+import com.example.collegeschedulerapp.Adapter.ExamAdapter;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private AssignmentAdapter adapter;
 
+    private ExamAdapter examAdapter;
     public RecyclerItemTouchHelper(AssignmentAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.adapter = adapter;
+    }
+
+    public RecyclerItemTouchHelper(ExamAdapter examAdapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        this.examAdapter = examAdapter;
     }
 
 
@@ -34,29 +41,48 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
         final int position = viewHolder.getAdapterPosition();
         if (direction == ItemTouchHelper.RIGHT) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
+
+            AlertDialog.Builder builder;
+            if (adapter != null) {
+                builder = new AlertDialog.Builder(adapter.getContext());
+            } else {
+                builder = new AlertDialog.Builder(examAdapter.getContext());
+            }
             builder.setTitle("Delete Task");
             builder.setMessage("Are you sure you want to delete this Assignment?");
             builder.setPositiveButton("Confirm",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.deleteItem(position);
+                            if (adapter != null) {
+                                adapter.deleteItem(position);
+                            } else {
+                                examAdapter.deleteItem(position);
+                            }
                         }
                     });
             builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    adapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                    if (adapter != null) {
+                        adapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                    } else {
+                        examAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                    }
+                    //adapter.notifyItemChanged(viewHolder.getAdapterPosition());
                 }
             });
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
             //Swipe Right Action
+            if (adapter != null) {
+                adapter.sendToDo(position);
+            } else {
+                examAdapter.sendToDo(position);
+            }
 
-
-            adapter.sendToDo(position);
+            //adapter.sendToDo(position);
 
         }
     }
@@ -72,10 +98,19 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         int backgroundCornerOffset = 20;
 
         if (dX > 0) {
-            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.delete_sweep);
+            if (adapter != null) {
+                icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.delete_sweep);
+            } else {
+                icon = ContextCompat.getDrawable(examAdapter.getContext(), R.drawable.delete_sweep);
+            }
             background = new ColorDrawable(Color.RED);
         } else {
-            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.add_task_swipe);
+
+            if (adapter != null) {
+                icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.add_task_swipe);
+            } else {
+                icon = ContextCompat.getDrawable(examAdapter.getContext(), R.drawable.add_task_swipe);
+            }
             background = new ColorDrawable(Color.BLUE);
         }
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,7 +55,7 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AssignmentsViewModel todoViewModel =
+        AssignmentsViewModel assignmentViewModel =
                 new ViewModelProvider(this).get(AssignmentsViewModel.class);
 
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);

@@ -35,6 +35,7 @@ android {
 dependencies {
 // Add this module to use WeekView with the Java 8 Date/Time API. This module
 // uses core library desugaring, making it available on API 21 and above.
+    implementation("jp.wasabeef:blurry:4.0.1")
     implementation("com.google.code.gson:gson:2.10")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.github.alamkanak:android-week-view:1.2.6")

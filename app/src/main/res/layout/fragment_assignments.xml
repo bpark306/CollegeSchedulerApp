@@ -12,6 +12,7 @@
         android:orientation="vertical"
         tools:context=".ui.assignments.AssignmentsFragment">
 
+
     <Switch
         android:background="@drawable/dialog_box"
         android:id="@+id/assignment_filter_switch"

@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:backgroundTint="@color/complementary"
     android:background="@drawable/dialog_box">
 
@@ -46,9 +45,10 @@
             android:textColor="@color/textColor"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/add_assignment_button"
-            app:layout_constraintStart_toEndOf="@+id/cancel_assignment_button"
-            app:layout_constraintTop_toTopOf="parent"/>
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/cancel_assignment_button"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/add_assignment_button"
