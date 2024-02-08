@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -33,6 +34,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,6 +62,7 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
         filterSwitch = binding.getRoot().findViewById(R.id.todo_filter_switch);
         showCompleted= binding.getRoot().findViewById(R.id.todo_show_completed);
         refreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_task);
+        showCompleted = binding.getRoot().findViewById(R.id.todo_show_completed);
         View root = binding.getRoot();
 
         return root;
@@ -101,6 +104,21 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 loadData();
                 itemAdapter.updateEmplist(myTasks);
+                recyclerView.setAdapter(itemAdapter);
+            }
+        });
+        showCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loadData();
+
+                ArrayList<Task> filteredCompleted = new  ArrayList<>();
+                for (int i = 0; i < myTasks.size(); i++) {
+                    if (myTasks.get(i).isCompleted()) {
+                        filteredCompleted.add(myTasks.get(i));
+                    }
+                }
+                itemAdapter.updateEmplist(filteredCompleted);
                 recyclerView.setAdapter(itemAdapter);
             }
         });
@@ -152,7 +170,6 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
         }
 
 
-
         if (!filterSwitch.isChecked()) {
             filterSwitch.setText("Sort by Due Date");
             myTasks.sort(new sortByDate());
@@ -160,6 +177,8 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
             filterSwitch.setText("Sort by Course");
             myTasks.sort(new sortByCourse());
         }
+
+
 
     }
 
@@ -197,5 +216,6 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
             return t1.getDueDateTime().compareTo(t2.getDueDateTime());
         }
     }
+
 }
 

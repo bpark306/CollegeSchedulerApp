@@ -37,9 +37,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         this.filteredCourses = new ArrayList<>();
 
         this.myCourses = myCourses;
+
         for (int i = 0; i < myCourses.size();i++) {
             if (myCourses.get(i).getMeetingDays().contains(filterDay)) {
-                Toast.makeText(getContext(), "Found course on days " + filterDay, Toast.LENGTH_SHORT).show();
                 this.filteredCourses.add(myCourses.get(i));
             }
         }
@@ -69,10 +69,42 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         Course current = filteredCourses.get(position);
         holder.instructor.setText("Professor " + current.instructor);
         holder.courseName.setText(current.name);
-        holder.meetingTime.setText(current.getTimeDateDueString());
+        String formatedMeetingDays = "";
+        if (current.getMeetingDays().contains("Sun")) {
+            formatedMeetingDays +="Sun";
+        }
+        if (current.getMeetingDays().contains("Mon")) {
+            formatedMeetingDays +="Mon";
+        }
+        if (current.getMeetingDays().contains("Tue")) {
+            formatedMeetingDays +="Tue";
+        }
+        if (current.getMeetingDays().contains("Wed")) {
+            formatedMeetingDays +="Wed";
+        }
+        if (current.getMeetingDays().contains("Thu")) {
+            formatedMeetingDays +="Thu";
+        }
+        if (current.getMeetingDays().contains("Fri")) {
+            formatedMeetingDays +="Fri";
+        }
+        if (current.getMeetingDays().contains("Sat")) {
+            formatedMeetingDays +="Sat";
+        }
+
+        StringBuilder stringBuilder = new StringBuilder((formatedMeetingDays));
+        int length = stringBuilder.length();
+        for (int  i = 3; i < length; i+=4) {
+            stringBuilder.insert(i,"-");
+            length++;
+        }
+
+        holder.meetingTime.setText(stringBuilder.toString() +  " | "  + current.getTimeDateDueString());
+
+
+
         if (current.getLocation().equals("N/A")) {
             holder.meetingLocation.setText("Online");
-
         } else if (current.room == null) {
 
             holder.meetingLocation.setText("At " + current.getLocation());
@@ -157,7 +189,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
 
     public void updateFilteredCourse (ArrayList<Course> myCourses, String filterDay) {
         this.myCourses = myCourses;
-        Toast.makeText(getContext(), "Filter is " + filterDay,Toast.LENGTH_LONG).show();
 
         filteredCourses = new ArrayList<>();
         for (int i = 0; i < myCourses.size();i++) {

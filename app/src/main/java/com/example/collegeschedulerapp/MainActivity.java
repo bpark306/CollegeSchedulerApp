@@ -74,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        /*
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.commit();
-
+        */
 
 
 

@@ -91,7 +91,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //Implement click on check box
+
                 }
             });
             dynamicButton.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +155,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
     public void updateEmplist(ArrayList<Task> myTasks) {
         this.myTasks = myTasks;
     }
+
+
 
 
 }

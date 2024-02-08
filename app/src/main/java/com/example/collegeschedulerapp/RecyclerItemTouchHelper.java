@@ -93,9 +93,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                         taskAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                     } else if (courseAdapter != null) {
                         courseAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
-                        //courseAdapter.deleteItem(position);
                     } else {
-
                         examAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                     }
                     //adapter.notifyItemChanged(viewHolder.getAdapterPosition());
@@ -108,6 +106,8 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             if (adapter != null) {
                 adapter.sendToDo(position);
             } else if (taskAdapter != null) {
+                //taskAdapter.sendToDo(position);
+            } else if (courseAdapter != null) {
                 //taskAdapter.sendToDo(position);
             } else {
                 examAdapter.sendToDo(position);
@@ -134,7 +134,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             } else if (taskAdapter != null) {
                 icon = ContextCompat.getDrawable(taskAdapter.getContext(), R.drawable.delete_sweep);
             } else if (courseAdapter != null) {
-                icon = ContextCompat.getDrawable(taskAdapter.getContext(), R.drawable.delete_sweep);
+                icon = ContextCompat.getDrawable(courseAdapter.getContext(), R.drawable.delete_sweep);
             } else {
                 icon = ContextCompat.getDrawable(examAdapter.getContext(), R.drawable.delete_sweep);
             }

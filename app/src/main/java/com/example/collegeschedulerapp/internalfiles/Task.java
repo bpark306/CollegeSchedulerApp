@@ -37,6 +37,7 @@ public class Task implements Comparable<Task> {
     public Task(Assignment assignmentTask) {
         this.assignmentTask = assignmentTask;
         name = "Get Started on " + assignmentTask.getName();
+        completed = assignmentTask.isCompleted();
         dueDateTime = assignmentTask.getDueDateTime();
         completed = assignmentTask.isCompleted();
         course = assignmentTask.getCourse();
@@ -45,7 +46,7 @@ public class Task implements Comparable<Task> {
     public Task(Exam examTask) {
 
         this.examTask = examTask;
-
+        completed = false;
         name = "Study for " + examTask.getName();
         dueDateTime = examTask.getExamDateTime();
         course = examTask.getCourse();
