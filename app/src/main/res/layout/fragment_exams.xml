@@ -4,6 +4,7 @@
     android:id="@+id/swipe_refresh_exam"
     android:layout_height="match_parent">
 
+
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -13,12 +14,36 @@
         android:orientation="vertical"
         tools:context=".ui.exams.ExamsFragment">
 
-        <Switch
-            android:background="@drawable/dialog_box"
-            android:id="@+id/exam_filter_switch"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Filter by Course"/>
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content">
+
+            <Switch
+                android:background="@drawable/dialog_box"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/exam_filter_switch"
+                android:text="Filter by Course"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <Switch
+                android:background="@drawable/dialog_box"
+                android:id="@+id/exam_show_completed"
+                android:text="Show Completed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_exams"

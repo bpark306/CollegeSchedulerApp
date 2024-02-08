@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +22,7 @@ import androidx.annotation.Nullable;
 import com.example.collegeschedulerapp.R;
 import com.example.collegeschedulerapp.internalfiles.Assignment;
 import com.example.collegeschedulerapp.internalfiles.Course;
+import com.example.collegeschedulerapp.internalfiles.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -36,31 +35,32 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
+public class TasksDialogFragment extends BottomSheetDialogFragment {
+    ArrayList<Task> myTasks;
     ArrayList<Course> myCourses;
     Date dueTimeDate;
 
     View rootView;
-    private TextInputLayout assignmentName, assignmentCourse;
+    private TextInputLayout taskName, taskCourse;
 
     Context context;
     Course selectedCourse;
-    TextView assignmentTitle;
-    Button dueTimeButton, dueDateButton, cancelNewAssignment, addNewAssignment;
+    TextView taskTitle;
+    Button dueTimeButton, dueDateButton, cancelNewTask, addNewTask;
 
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<Course> adapaterItem;
-    String savedAssignmentName, savedAssignmentCourse, dueDateAndTime;
+    String savedTaskName, savedTaskCourse, dueDateAndTime;
 
 
-    public AssignmentsDialogFragment(Context context) {
+    public TasksDialogFragment(Context context) {
         this.context = context;
     }
 
-    public AssignmentsDialogFragment(Context context, String savedAssignmentName, String savedAssignmentCourse, String dueDateAndTime) {
+    public TasksDialogFragment(Context context, String savedTaskName, String savedTaskCourse, String dueDateAndTime) {
         this.context = context;
-        this.savedAssignmentName = savedAssignmentName;
-        this.savedAssignmentCourse = savedAssignmentCourse;
+        this.savedTaskName = savedTaskName;
+        this.savedTaskCourse = savedTaskCourse;
         this.dueDateAndTime = dueDateAndTime;
     }
     @Nullable
@@ -69,17 +69,16 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.assignment_bottom_dialog, container, false);
+        rootView = inflater.inflate(R.layout.task_bottom_dialog, container, false);
         //bottom sheet round corners can be obtained but the while background appears to remove that we need to add this.
         loadData();
 
         Calendar cal = Calendar.getInstance();
 
-
         dueTimeDate = cal.getTime();
 
-        dueTimeDate.setYear(cal.get(Calendar.YEAR));
-        dueTimeDate.setMonth(cal.get(Calendar.MONTH));
+        dueTimeDate.setYear(cal.get(Calendar.YEAR) + 1900);
+        dueTimeDate.setMonth(cal.get(Calendar.DAY_OF_MONTH));
         dueTimeDate.setDate(cal.get(Calendar.DAY_OF_MONTH));
 
         SimpleDateFormat dateForm = new SimpleDateFormat("MM/dd/YY");
@@ -88,8 +87,8 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
 
 
-        dueTimeButton = rootView.findViewById(R.id.due_time_button);
-        dueDateButton = rootView.findViewById(R.id.due_date_button);
+        dueTimeButton = rootView.findViewById(R.id.due_time_button_task);
+        dueDateButton = rootView.findViewById(R.id.due_date_button_task);
 
 
         dueDateButton.setText(dateForm.format(dueTimeDate));
@@ -97,24 +96,24 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
 
 
-        cancelNewAssignment = rootView.findViewById(R.id.cancel_assignment_button);
-        addNewAssignment = rootView.findViewById(R.id.add_assignment_button);
+        cancelNewTask = rootView.findViewById(R.id.cancel_task_button);
+        addNewTask = rootView.findViewById(R.id.add_task_button);
 
 
-        assignmentName = rootView.findViewById(R.id.assignment_name);
-        assignmentCourse = rootView.findViewById(R.id.assocciated_course);
-        assignmentTitle = rootView.findViewById(R.id.assignment_title);
+        taskName = rootView.findViewById(R.id.task_name);
+        taskCourse = rootView.findViewById(R.id.assocciated_course_task);
+        taskTitle = rootView.findViewById(R.id.task_title);
 
 
 
-        if (savedAssignmentName != null || dueDateAndTime != null || savedAssignmentCourse != null) {
-            addNewAssignment.setText("Edit");
-            assignmentTitle.setText("EDITING " + savedAssignmentName);
+        if (savedTaskName != null || dueDateAndTime != null || savedTaskCourse != null) {
+            addNewTask.setText("Edit");
+            taskTitle.setText("EDITING " + savedTaskName);
         }
 
 
 
-        autoCompleteTextView = rootView.findViewById(R.id.autocomplete_course);
+        autoCompleteTextView = rootView.findViewById(R.id.autocomplete_course_task);
 
         adapaterItem = new ArrayAdapter<Course>(context, R.layout.list_item, myCourses);
 
@@ -144,14 +143,14 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
 
 
-        cancelNewAssignment.setOnClickListener(new View.OnClickListener() {
+        cancelNewTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
 
-        addNewAssignment.setOnClickListener(new View.OnClickListener() {
+        addNewTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -165,34 +164,26 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
 
     public void confirmInput(View v) {
-        if (validateTextInput(assignmentName)
-                && validateTextInput(assignmentCourse)
-                && !alreadyContainsName(selectedCourse, assignmentName)) {
+        if (validateTextInput(taskName)
+                && validateTextInput(taskCourse)
+                && !alreadyContainsName(selectedCourse, taskName)) {
 
-            if (savedAssignmentName != null || savedAssignmentCourse != null || dueDateAndTime != null) {
+            if (savedTaskName != null || savedTaskCourse != null || dueDateAndTime != null) {
                 //iterate thru ArrayList<Courses>
-                for (int i = 0; i < myCourses.size(); i++) {
+                for (int i = 0; i < myTasks.size(); i++) {
 
-                    //Found specific course with matching name
-                    if (myCourses.get(i).name.equals(savedAssignmentCourse)) {
-
-                        //Iterate thru ArrayList<Assignment
-                        for(int j = 0; j < myCourses.get(i).assignments.size(); j++) {
-
-                            //Found specific assignment with matching name
-                            if (myCourses.get(i).assignments.get(j).getName().equals(savedAssignmentName)) {
-                                myCourses.get(i).assignments.remove(j);
-
-                            }
-                        }
+                    //Found specific assignment with matching name
+                    if (myTasks.get(i).getName().equals(savedTaskName) && myTasks.get(i).getCourse().equals(savedTaskCourse)) {
+                        myTasks.remove(i);
                     }
                 }
             }
 
-            selectedCourse.assignments.add(new Assignment(assignmentName.getEditText().getText().toString(),
-                    dueTimeDate,
-                    false,
-                    selectedCourse));
+            myTasks.add(new Task(taskName.getEditText().getText().toString(),
+                            dueTimeDate,
+                            false,
+                            selectedCourse));
+
 
             saveData();
             dismiss();
@@ -202,7 +193,11 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("shared preferences",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(myCourses);
+        String json = gson.toJson(myTasks);
+        editor.putString("my tasks", json);
+        editor.apply();
+
+        json = gson.toJson(myCourses);
         editor.putString("my courses", json);
         editor.apply();
     }
@@ -212,13 +207,23 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("my courses", null);
-        Type type = new TypeToken<ArrayList<Course>>() {}.getType();
+        String json = sharedPreferences.getString("my tasks", null);
+        Type type = new TypeToken<ArrayList<Task>>() {}.getType();
+        myTasks = gson.fromJson(json, type);
+
+        if (myTasks == null) {
+            myTasks = new ArrayList<>();
+
+        }
+        json = sharedPreferences.getString("my courses", null);
+        type = new TypeToken<ArrayList<Course>>() {}.getType();
         myCourses = gson.fromJson(json, type);
 
         if (myCourses == null) {
             myCourses = new ArrayList<>();
+
         }
+
     }
 
     public boolean validateTextInput(TextInputLayout tiy) {
@@ -239,18 +244,12 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
         String text = textInputLayout.getEditText().getText().toString().trim();
 
-        for (Course a: myCourses) {
+        for (Task task: myTasks) {
             //intentionally, I want to see if these two courses refer to the same obj
-            if (a == course) {
-                for (Assignment b: a.assignments) {
-                    if (b.getName().equalsIgnoreCase(text)) {
-                        textInputLayout.setError("Cannot be the same name as an assignment in the same course!");
-                        return true;
-                    }
-                }
+            if (task.getName().equals(text)) {
+                return true;
             }
         }
-
         return false;
     }
 
@@ -283,7 +282,6 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
         DatePickerDialog dialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
 
 
                 dueTimeDate.setYear(year);

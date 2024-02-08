@@ -19,10 +19,13 @@ import com.example.collegeschedulerapp.internalfiles.RecyclerViewInterface;
 import com.example.collegeschedulerapp.internalfiles.RecyclerViewInterfaceExam;
 import com.example.collegeschedulerapp.internalfiles.Task;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.MyViewHolder>{
@@ -35,10 +38,10 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.MyViewHolder>{
 
     public ExamAdapter(RecyclerViewInterfaceExam recyclerViewInterfaceExam, Context context, ArrayList<Exam> myExams, ArrayList<Course> myCourses, ArrayList<Task> myTasks  ) {
         this.recyclerViewInterfaceExam = recyclerViewInterfaceExam;
+
         this.myExams = myExams;
         this.myCourses = myCourses;
         this.myTasks = myTasks;
-
         this.context = context;
     }
 
@@ -134,15 +137,45 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.MyViewHolder>{
         String json = gson.toJson(myCourses);
         editor.putString("my courses", json);
         editor.apply();
+
+        json = gson.toJson(myTasks);
+        editor.putString("my tasks", json);
+        editor.apply();
+    }
+
+    private void loadData() {
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+
+        //Get Courses
+        String json = sharedPreferences.getString("my courses", null);
+        Type type = new TypeToken<ArrayList<Course>>() {}.getType();
+        myCourses = gson.fromJson(json, type);
+
+
+        if (myCourses == null) {
+            myCourses = new ArrayList<>();
+        }
+
+        json = sharedPreferences.getString("my tasks", null);
+        type = new TypeToken<ArrayList<Task>>() {}.getType();
+        myTasks = gson.fromJson(json, type);
+
+
+        if (myTasks == null) {
+            myTasks = new ArrayList<>();
+        }
     }
 
 
 
     public void sendToDo(int position) {
+        loadData();
         myTasks.add(new Task(myExams.get(position)));
+        saveData();
         notifyItemChanged(position);
         Toast.makeText(context, "Exam Moved to TodoList!", Toast.LENGTH_SHORT).show();
-        saveData();
     }
 
     public void updatemMyExams(ArrayList<Exam> myExams) {

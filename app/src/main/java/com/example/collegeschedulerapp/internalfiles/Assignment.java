@@ -38,7 +38,7 @@ public class Assignment implements Comparable<Assignment> {
 
     public String getTimeDateDueString() {
 
-        SimpleDateFormat dateForm = new SimpleDateFormat("EEE, MMM yy");
+        SimpleDateFormat dateForm = new SimpleDateFormat("EEE, MMM dd");
         SimpleDateFormat timeForm = new SimpleDateFormat("h:mm a");
 
 

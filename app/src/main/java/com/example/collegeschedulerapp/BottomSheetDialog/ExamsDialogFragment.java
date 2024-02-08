@@ -124,8 +124,8 @@ public class ExamsDialogFragment extends BottomSheetDialogFragment {
 
         examTimeDate = cal.getTime();
 
-        examTimeDate.setYear(cal.get(Calendar.YEAR) + 1900);
-        examTimeDate.setMonth(cal.get(Calendar.DAY_OF_MONTH));
+        examTimeDate.setYear(cal.get(Calendar.YEAR));
+        examTimeDate.setMonth(cal.get(Calendar.MONTH));
         examTimeDate.setDate(cal.get(Calendar.DAY_OF_MONTH));
 
         SimpleDateFormat dateForm = new SimpleDateFormat("MM/dd/YY");
@@ -330,7 +330,7 @@ public class ExamsDialogFragment extends BottomSheetDialogFragment {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
 
-                dueTimeDate.setYear(cal.get(Calendar.YEAR));
+                dueTimeDate.setYear(year);
                 dueTimeDate.setMonth(month);
                 dueTimeDate.setDate(dayOfMonth);
 

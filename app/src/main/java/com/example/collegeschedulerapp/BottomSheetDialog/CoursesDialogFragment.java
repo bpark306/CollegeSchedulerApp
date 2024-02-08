@@ -1,25 +1,21 @@
 package com.example.collegeschedulerapp.BottomSheetDialog;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.collegeschedulerapp.internalfiles.Assignment;
 import com.example.collegeschedulerapp.internalfiles.Course;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
@@ -28,48 +24,43 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.FragmentManager;
 
 
 import com.example.collegeschedulerapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.Type;
-import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CoursesDialogFragment extends BottomSheetDialogFragment {
 
 
     ArrayList<Course> myCourses;
+    Date startTimeDate, endTimeDate;
+    Place selectedPlace;
 
     private Button addCourseButton, cancelCourseButton, startTimeButton, endTimeButton, locationPickerButton;
     private TextInputLayout courseName, courseSection, courseInstructor;
     Context context;
     BottomSheetBehavior<View> bottomSheetBehavior;
-
+    String markedButtons;
 
     View rootView;
 
-    ToggleButton tD, tL, tM, tMi, tJ, tV, tS;
+    ToggleButton sundayButton, mondayButton, tuesdayButton, wednesdayButton, thursdayButton, fridayButton, saturdayButton;
 
     public CoursesDialogFragment(Context context) {
         this.context = context;
@@ -86,18 +77,19 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
 
         loadData();
 
+
         Places.initialize(context, "AIzaSyAhjsp0gs7vVtpCsrc5IHLBwT-835Fczu0");
 
 
         BottomNavigationView navView = rootView.findViewById(R.id.nav_view);
-        tD = (ToggleButton) rootView.findViewById(R.id.tD);
-        tL = (ToggleButton) rootView.findViewById(R.id.tL);
-        tM = (ToggleButton) rootView.findViewById(R.id.tM);
-        tMi = (ToggleButton) rootView.findViewById(R.id.tMi);
-        tJ = (ToggleButton) rootView.findViewById(R.id.tJ);
-        tV = (ToggleButton) rootView.findViewById(R.id.tV);
-        tS = (ToggleButton) rootView.findViewById(R.id.tS);
-        String markedButtons= "";
+        sundayButton = (ToggleButton) rootView.findViewById(R.id.tD);
+        mondayButton = (ToggleButton) rootView.findViewById(R.id.tL);
+        tuesdayButton = (ToggleButton) rootView.findViewById(R.id.tM);
+        wednesdayButton = (ToggleButton) rootView.findViewById(R.id.tMi);
+        thursdayButton = (ToggleButton) rootView.findViewById(R.id.tJ);
+        fridayButton = (ToggleButton) rootView.findViewById(R.id.tV);
+        saturdayButton = (ToggleButton) rootView.findViewById(R.id.tS);
+        markedButtons= "";
 
         courseName = rootView.findViewById(R.id.course_name);
         courseSection= rootView.findViewById(R.id.course_section);
@@ -109,6 +101,31 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
 
         startTimeButton = rootView.findViewById(R.id.start_time_button);
         endTimeButton = rootView.findViewById(R.id.end_time_button);
+
+
+
+        Calendar cal = Calendar.getInstance();
+
+        startTimeDate = cal.getTime();
+
+        startTimeDate.setMinutes(cal.get(Calendar.MINUTE));
+        startTimeDate.setHours(cal.get(Calendar.HOUR));
+
+        endTimeDate = cal.getTime();
+
+        endTimeDate.setMinutes(cal.get(Calendar.MINUTE));
+        endTimeDate.setHours(cal.get(Calendar.HOUR) + 1);
+
+
+
+        SimpleDateFormat dateForm = new SimpleDateFormat("MM/dd/YY");
+        SimpleDateFormat timeForm = new SimpleDateFormat("h:mm a");
+
+
+        startTimeButton.setText(timeForm.format(startTimeDate));
+        endTimeButton.setText(timeForm.format(endTimeDate));
+
+
 
 
         // Initialize the AutocompleteSupportFragment.
@@ -124,6 +141,7 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
+                selectedPlace = place;
                 // TODO: Get info about the selected place.
                 Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
             }
@@ -144,14 +162,14 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
         startTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog(rootView, startTimeButton);
+                TimePickerDialog(rootView, startTimeButton, startTimeDate);
             }
         });
 
         endTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog(rootView, endTimeButton);
+                TimePickerDialog(rootView, endTimeButton, endTimeDate);
             }
         });
 
@@ -215,12 +233,65 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
 
 
     public void confirmInput(View v) {
-        if (validateTextInput(courseName) && validateTextInput(courseInstructor)) {
-            Course newCourse = new Course(courseName.getEditText().getText().toString());
+        if (validateTextInput(courseName)
+                && !alreadyContainsCourse(courseName)
+                && validateTextInput(courseInstructor)
+
+
+        ) {
+            String meetingTimes = "";
+            if (sundayButton.isChecked()) {
+                meetingTimes += "Sun";
+            }
+            if (mondayButton.isChecked()) {
+                meetingTimes += "Mon";
+            }
+            if (tuesdayButton.isChecked()) {
+                meetingTimes += "Tues";
+            }
+            if (wednesdayButton.isChecked()) {
+                meetingTimes += "Wed";
+            }
+            if (thursdayButton.isChecked()) {
+                meetingTimes += "Thu";
+            }
+            if (fridayButton.isChecked()) {
+                meetingTimes += "Fri";
+            }
+            if (saturdayButton.isChecked()) {
+                meetingTimes += "Sat";
+            }
+            Toast.makeText(context, meetingTimes, Toast.LENGTH_SHORT).show();
+
+            Course newCourse = new Course(courseName.getEditText().getText().toString()
+                    ,courseInstructor.getEditText().getText().toString()
+                    ,meetingTimes
+                    ,startTimeDate
+                    ,endTimeDate);
+
+            if(selectedPlace != null) {
+                newCourse.setLocation(selectedPlace.getName());
+            }
+
             myCourses.add(newCourse);
             saveData();
             dismiss();
         }
+    }
+
+    private boolean alreadyContainsCourse(TextInputLayout textInputLayout) {
+
+        String text = textInputLayout.getEditText().getText().toString().trim();
+
+        for (Course a: myCourses) {
+            //intentionally, I want to see if these two courses refer to the same obj
+            if (a.name.equalsIgnoreCase(text)) {
+                textInputLayout.setError("Cannot make another course in the same!");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void saveData() {
@@ -238,16 +309,20 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
 
 
 
-    public void TimePickerDialog(View v, Button button) {
+    public void TimePickerDialog(View v, Button button, Date date) {
         TimePickerDialog dialog = new TimePickerDialog(context, 3,new TimePickerDialog.OnTimeSetListener() {
 
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                if (hourOfDay > 12) {
-                    button.setText(String.format("%02d:%02d PM", hourOfDay% 12, minute));
-                } else {
-                    button.setText(String.format("%02d:%02d AM", hourOfDay, minute));
-                }
+
+
+                date.setHours(hourOfDay);
+                date.setMinutes(minute);
+
+
+                SimpleDateFormat timeForm = new SimpleDateFormat("H:mm a");
+                button.setText(timeForm.format(date));
+
             }}, 12, 00, false);
 
 

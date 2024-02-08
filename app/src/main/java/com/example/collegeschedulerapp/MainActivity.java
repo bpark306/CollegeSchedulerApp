@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.collegeschedulerapp.BottomSheetDialog.AssignmentsDialogFragment;
 import com.example.collegeschedulerapp.BottomSheetDialog.CoursesDialogFragment;
 import com.example.collegeschedulerapp.BottomSheetDialog.ExamsDialogFragment;
+import com.example.collegeschedulerapp.BottomSheetDialog.TasksDialogFragment;
 import com.example.collegeschedulerapp.internalfiles.Course;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,11 +38,12 @@ import jp.wasabeef.blurry.Blurry;
 public class MainActivity extends AppCompatActivity {
 
 
+    //CLEAR SHARED PREF
     private ActivityMainBinding binding;
 
     private ExtendedFloatingActionButton addButton;
-    private FloatingActionButton courseButton,examButton, assignmentButton;
-    private TextView courseButtonText, examButtonText, assignmentButtonText;
+    private FloatingActionButton courseButton,examButton, assignmentButton, taskButton;
+    private TextView courseButtonText, examButtonText, assignmentButtonText, taskButtonText;
     private boolean isAllFABVisble;
 
     ArrayList<Course> myCourses;
@@ -72,29 +74,58 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("shared preferences",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+
+
+
+
+
+
+
+
+
+
+
+
         // FLoating Button Code
         addButton = findViewById(R.id.add_btn);
         courseButton = findViewById(R.id.add_course);
         examButton = findViewById(R.id.add_exam);
         assignmentButton = findViewById(R.id.add_assignment);
+        taskButton = findViewById(R.id.add_task);
 
         courseButtonText = findViewById(R.id.add_course_text);
         examButtonText = findViewById(R.id.add_exam_text);
         assignmentButtonText = findViewById(R.id.add_assignment_text);
+        taskButtonText = findViewById(R.id.add_task_text);
 
         courseButton.setVisibility(View.GONE);
         examButton.setVisibility(View.GONE);
         assignmentButton.setVisibility(View.GONE);
+        taskButton.setVisibility(View.GONE);
 
         courseButtonText.setVisibility(View.GONE);
         examButtonText.setVisibility(View.GONE);
         assignmentButtonText.setVisibility(View.GONE);
+        taskButtonText.setVisibility(View.GONE);
+
 
         isAllFABVisble = false;
         addButton.shrink();
 
 
 
+        taskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TasksDialogFragment tasksDialogFragment = new TasksDialogFragment(MainActivity.this);
+                tasksDialogFragment.show(getSupportFragmentManager(), "Yay?");
+            }
+        });
 
 
         courseButton.setOnClickListener(new View.OnClickListener() {
@@ -132,10 +163,13 @@ public class MainActivity extends AppCompatActivity {
                     courseButton.show();
                     examButton.show();
                     assignmentButton.show();
+                    taskButton.show();
 
                     courseButtonText.setVisibility(View.VISIBLE);
                     examButtonText.setVisibility(View.VISIBLE);
                     assignmentButtonText.setVisibility(View.VISIBLE);
+                    taskButtonText.setVisibility(View.VISIBLE);
+
 
                     addButton.extend();
                 } else {
@@ -143,10 +177,12 @@ public class MainActivity extends AppCompatActivity {
                     courseButton.setVisibility(View.GONE);
                     examButton.setVisibility(View.GONE);
                     assignmentButton.setVisibility(View.GONE);
+                    taskButton.setVisibility(View.GONE);
 
                     courseButtonText.setVisibility(View.GONE);
                     examButtonText.setVisibility(View.GONE);
                     assignmentButtonText.setVisibility(View.GONE);
+                    taskButtonText.setVisibility(View.GONE);
 
                 }
                 isAllFABVisble = !isAllFABVisble;
@@ -162,15 +198,19 @@ public class MainActivity extends AppCompatActivity {
                 Rect outCourse = new Rect();
                 Rect outAssignment = new Rect();
                 Rect outExam = new Rect();
+                Rect outTask = new Rect();
 
                 courseButton.getGlobalVisibleRect(outCourse);
                 assignmentButton.getGlobalVisibleRect(outAssignment);
                 examButton.getGlobalVisibleRect(outExam);
+                taskButton.getGlobalVisibleRect(outTask);
+
 
 
                 if(!outCourse.contains((int)event.getRawX(), (int)event.getRawY())
                         && !outAssignment.contains((int)event.getRawX(), (int)event.getRawY())
-                        && !outExam.contains((int)event.getRawX(), (int)event.getRawY())) {
+                        && !outExam.contains((int)event.getRawX(), (int)event.getRawY())
+                        && !outTask.contains((int)event.getRawX(), (int)event.getRawY())) {
 
                     addButton.callOnClick();
                     return false;

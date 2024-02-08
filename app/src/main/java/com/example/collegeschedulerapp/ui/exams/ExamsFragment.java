@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,29 +20,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import com.example.collegeschedulerapp.Adapter.AssignmentAdapter;
 import com.example.collegeschedulerapp.Adapter.ExamAdapter;
-import com.example.collegeschedulerapp.BottomSheetDialog.AssignmentsDialogFragment;
+import com.example.collegeschedulerapp.BottomSheetDialog.CoursesDialogFragment;
 import com.example.collegeschedulerapp.BottomSheetDialog.ExamsDialogFragment;
 import com.example.collegeschedulerapp.R;
 import com.example.collegeschedulerapp.RecyclerItemTouchHelper;
-import com.example.collegeschedulerapp.databinding.FragmentAssignmentsBinding;
 import com.example.collegeschedulerapp.databinding.FragmentExamsBinding;
-import com.example.collegeschedulerapp.internalfiles.Assignment;
 import com.example.collegeschedulerapp.internalfiles.Course;
 import com.example.collegeschedulerapp.internalfiles.Exam;
-import com.example.collegeschedulerapp.internalfiles.RecyclerViewInterface;
 import com.example.collegeschedulerapp.internalfiles.RecyclerViewInterfaceExam;
 import com.example.collegeschedulerapp.internalfiles.Task;
-import com.example.collegeschedulerapp.ui.assignments.AssignmentsFragment;
-import com.example.collegeschedulerapp.ui.assignments.AssignmentsViewModel;
+import com.example.collegeschedulerapp.ui.courses.CoursesFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam {
 
@@ -79,6 +72,7 @@ public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam
         loadData();
         ExamAdapter itemAdapter = new ExamAdapter(this, getContext(), myExams, myCourses, myTasks);
 
+
         // Set the LayoutManager that
         // this RecyclerView will use.
         recyclerView = view.findViewById(R.id.list_exams);
@@ -112,9 +106,9 @@ public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam
 
     }
 
-    public static ExamsFragment newInstance()
+    public static CoursesFragment newInstance()
     {
-        return new ExamsFragment();
+        return new CoursesFragment();
     }
 
     private void saveData() {
@@ -123,8 +117,6 @@ public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam
         Gson gson = new Gson();
         String json = gson.toJson(myCourses);
         editor.putString("my courses", json);
-        //json = gson.toJson(myTasks);
-        //editor.putString("my tasks", json);
         editor.apply();
     }
 
@@ -142,23 +134,12 @@ public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam
         if (myCourses == null) {
             myCourses = new ArrayList<>();
         }
-        if (myTasks == null) {
-            myTasks = new ArrayList<>();
-        }
+
 
         myExams = new ArrayList<>();
 
-
-
-        for (Course a : myCourses) {
+        for (Course a: myCourses) {
             myExams.addAll(a.exams);
-        }
-
-        if (!filterSwitch.isChecked()) {
-            filterSwitch.setText("Sort by Date");
-            Collections.sort(myExams);
-        } else {
-            filterSwitch.setText("Sort by Course");
         }
 
 
@@ -173,8 +154,8 @@ public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam
 
     @Override
     public void onClick(int position, String name, String course, String dueDateAndTime, String examLocation) {
-        ExamsDialogFragment examsDialogFragment = new ExamsDialogFragment(getContext(), name, course, examLocation);
-        examsDialogFragment.show(getActivity().getSupportFragmentManager(), "Yay!");
+        //CoursesDialogFragment courseDialogFragment = new CoursesDialogFragment(getContext());
+        //courseDialogFragment.show(getActivity().getSupportFragmentManager(), "Yay!");
 
     }
 }

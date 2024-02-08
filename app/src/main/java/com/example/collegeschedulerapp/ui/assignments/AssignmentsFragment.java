@@ -8,13 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,7 +34,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 public class AssignmentsFragment extends Fragment implements RecyclerViewInterface {
 
@@ -118,8 +114,10 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
         Gson gson = new Gson();
         String json = gson.toJson(myCourses);
         editor.putString("my courses", json);
-        //json = gson.toJson(myTasks);
-        //editor.putString("my tasks", json);
+        editor.apply();
+
+        json = gson.toJson(myTasks);
+        editor.putString("my tasks", json);
         editor.apply();
     }
 
@@ -134,15 +132,21 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
         Type type = new TypeToken<ArrayList<Course>>() {}.getType();
         myCourses = gson.fromJson(json, type);
 
+
         if (myCourses == null) {
             myCourses = new ArrayList<>();
         }
+
+        json = sharedPreferences.getString("my tasks", null);
+        type = new TypeToken<ArrayList<Task>>() {}.getType();
+        myTasks = gson.fromJson(json, type);
+
+
         if (myTasks == null) {
             myTasks = new ArrayList<>();
         }
 
         myAssignments = new ArrayList<>();
-
 
         for (Course a : myCourses) {
             myAssignments.addAll(a.assignments);

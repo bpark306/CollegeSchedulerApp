@@ -14,13 +14,18 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegeschedulerapp.Adapter.AssignmentAdapter;
+import com.example.collegeschedulerapp.Adapter.CourseAdapter;
 import com.example.collegeschedulerapp.Adapter.ExamAdapter;
+import com.example.collegeschedulerapp.Adapter.TaskAdapter;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private AssignmentAdapter adapter;
 
     private ExamAdapter examAdapter;
+    private TaskAdapter taskAdapter;
+    CourseAdapter courseAdapter;
+
     public RecyclerItemTouchHelper(AssignmentAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.adapter = adapter;
@@ -29,6 +34,16 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public RecyclerItemTouchHelper(ExamAdapter examAdapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.examAdapter = examAdapter;
+    }
+
+    public RecyclerItemTouchHelper(TaskAdapter taskAdapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        this.taskAdapter = taskAdapter;
+    }
+
+    public RecyclerItemTouchHelper(CourseAdapter courseAdapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        this.courseAdapter = courseAdapter;
     }
 
 
@@ -45,17 +60,25 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             AlertDialog.Builder builder;
             if (adapter != null) {
                 builder = new AlertDialog.Builder(adapter.getContext());
+            } else if (taskAdapter != null) {
+                builder = new AlertDialog.Builder(taskAdapter.getContext());
+            } else if (courseAdapter != null) {
+                builder = new AlertDialog.Builder(courseAdapter.getContext());
             } else {
                 builder = new AlertDialog.Builder(examAdapter.getContext());
             }
-            builder.setTitle("Delete Task");
-            builder.setMessage("Are you sure you want to delete this Assignment?");
+            builder.setTitle("Delete Item");
+            builder.setMessage("Are you sure you want to delete this item?");
             builder.setPositiveButton("Confirm",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (adapter != null) {
                                 adapter.deleteItem(position);
+                            } else if (taskAdapter != null) {
+                                taskAdapter.deleteItem(position);
+                            } else if (courseAdapter != null) {
+                                courseAdapter.deleteItem(position);
                             } else {
                                 examAdapter.deleteItem(position);
                             }
@@ -66,7 +89,13 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                 public void onClick(DialogInterface dialog, int which) {
                     if (adapter != null) {
                         adapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                    } else if (taskAdapter != null) {
+                        taskAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                    } else if (courseAdapter != null) {
+                        courseAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                        //courseAdapter.deleteItem(position);
                     } else {
+
                         examAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                     }
                     //adapter.notifyItemChanged(viewHolder.getAdapterPosition());
@@ -78,6 +107,8 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             //Swipe Right Action
             if (adapter != null) {
                 adapter.sendToDo(position);
+            } else if (taskAdapter != null) {
+                //taskAdapter.sendToDo(position);
             } else {
                 examAdapter.sendToDo(position);
             }
@@ -100,6 +131,10 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         if (dX > 0) {
             if (adapter != null) {
                 icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.delete_sweep);
+            } else if (taskAdapter != null) {
+                icon = ContextCompat.getDrawable(taskAdapter.getContext(), R.drawable.delete_sweep);
+            } else if (courseAdapter != null) {
+                icon = ContextCompat.getDrawable(taskAdapter.getContext(), R.drawable.delete_sweep);
             } else {
                 icon = ContextCompat.getDrawable(examAdapter.getContext(), R.drawable.delete_sweep);
             }
@@ -108,7 +143,11 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
             if (adapter != null) {
                 icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.add_task_swipe);
-            } else {
+            } else if (taskAdapter != null) {
+                icon = ContextCompat.getDrawable(taskAdapter.getContext(), R.drawable.add_task_swipe);
+            } else if (courseAdapter != null) {
+                icon = ContextCompat.getDrawable(courseAdapter.getContext(), R.drawable.delete_sweep);
+            }else {
                 icon = ContextCompat.getDrawable(examAdapter.getContext(), R.drawable.add_task_swipe);
             }
             background = new ColorDrawable(Color.BLUE);
