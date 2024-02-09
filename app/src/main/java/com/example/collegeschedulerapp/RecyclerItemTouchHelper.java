@@ -102,7 +102,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            //Swipe Right Action
+            //Swipe Right to Left Action
             if (adapter != null) {
                 adapter.sendToDo(position);
             } else if (taskAdapter != null) {

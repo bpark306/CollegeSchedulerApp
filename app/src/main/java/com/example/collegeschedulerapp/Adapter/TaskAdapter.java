@@ -101,7 +101,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
                         int position = getAdapterPosition();
 
                         if (position != RecyclerView.NO_POSITION) {
-                            recyclerViewInterfaceTask.onClick(position, name.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString(), false);
+                            recyclerViewInterfaceTask.onClick(position, name.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString());
                         }
                     }
                 }
@@ -124,6 +124,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
                 for(int j = 0; j < myCourses.get(i).assignments.size(); j++){
                     if (myCourses.get(i).assignments.get(j).getName().equals(myTasks.get(position).getName())) {
                         myTasks.get(position).switchStatus(checkBox.isChecked());
+                        myCourses.get(i).assignments.get(j).setCompleted(checkBox.isChecked());
                         saveData();
                     }
                 }

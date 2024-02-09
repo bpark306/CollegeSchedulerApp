@@ -21,6 +21,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.collegeschedulerapp.Adapter.TaskAdapter;
+import com.example.collegeschedulerapp.BottomSheetDialog.ExamsDialogFragment;
+import com.example.collegeschedulerapp.BottomSheetDialog.TasksDialogFragment;
 import com.example.collegeschedulerapp.R;
 import com.example.collegeschedulerapp.RecyclerItemTouchHelper;
 import com.example.collegeschedulerapp.databinding.FragmentTodoBinding;
@@ -75,6 +77,8 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
 
         loadData();
 
+
+
         TaskAdapter itemAdapter = new TaskAdapter(this, getContext(), myCourses, myTasks);
 
         // Set the LayoutManager that
@@ -83,18 +87,45 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(itemAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
+        itemAdapter.updateEmplist(myTasks);
+        recyclerView.setAdapter(itemAdapter);
 
         // adapter instance is set to the
         // recyclerview to inflate the items.
-        recyclerView.setAdapter(itemAdapter);
+
+        if (!showCompleted.isChecked()) {
+            ArrayList<Task> filteredCompleted = new  ArrayList<>();
+            for (int i = 0; i < myTasks.size(); i++) {
+                if (!myTasks.get(i).isCompleted()) {
+                    filteredCompleted.add(myTasks.get(i));
+                }
+            }
+            itemAdapter.updateEmplist(filteredCompleted);
+            recyclerView.setAdapter(itemAdapter);
+        } else {
+            itemAdapter.updateEmplist(myTasks);
+            recyclerView.setAdapter(itemAdapter);
+        }
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 loadData();
-                itemAdapter.updateEmplist(myTasks);
-                recyclerView.setAdapter(itemAdapter);
+
+                if (!showCompleted.isChecked()) {
+                    ArrayList<Task> filteredCompleted = new  ArrayList<>();
+                    for (int i = 0; i < myTasks.size(); i++) {
+                        if (!myTasks.get(i).isCompleted()) {
+                            filteredCompleted.add(myTasks.get(i));
+                        }
+                    }
+                    itemAdapter.updateEmplist(filteredCompleted);
+                    recyclerView.setAdapter(itemAdapter);
+                } else {
+                    itemAdapter.updateEmplist(myTasks);
+                    recyclerView.setAdapter(itemAdapter);
+                }
+
                 refreshLayout.setRefreshing(false);
             }
         });
@@ -103,23 +134,41 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 loadData();
-                itemAdapter.updateEmplist(myTasks);
-                recyclerView.setAdapter(itemAdapter);
+                if (!showCompleted.isChecked()) {
+                    ArrayList<Task> filteredCompleted = new  ArrayList<>();
+                    for (int i = 0; i < myTasks.size(); i++) {
+                        if (!myTasks.get(i).isCompleted()) {
+                            filteredCompleted.add(myTasks.get(i));
+                        }
+                    }
+                    itemAdapter.updateEmplist(filteredCompleted);
+                    recyclerView.setAdapter(itemAdapter);
+                } else {
+                    itemAdapter.updateEmplist(myTasks);
+                    recyclerView.setAdapter(itemAdapter);
+                }
             }
         });
+
+
         showCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 loadData();
-
+                if (isChecked) {
                 ArrayList<Task> filteredCompleted = new  ArrayList<>();
                 for (int i = 0; i < myTasks.size(); i++) {
-                    if (myTasks.get(i).isCompleted()) {
+                    if (!myTasks.get(i).isCompleted()) {
                         filteredCompleted.add(myTasks.get(i));
                     }
                 }
                 itemAdapter.updateEmplist(filteredCompleted);
                 recyclerView.setAdapter(itemAdapter);
+                } else {
+                    itemAdapter.updateEmplist(myTasks);
+                    recyclerView.setAdapter(itemAdapter);
+                }
+
             }
         });
 
@@ -190,8 +239,9 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
     }
 
     @Override
-    public void onClick(int position, String name, String course, String dueDateAndTime, boolean dummy) {
-        int i = 0;
+    public void onClick(int position, String name, String course, String dueDateAndTime) {
+        TasksDialogFragment tasksDialogFragment = new TasksDialogFragment(getContext(), name, course, dueDateAndTime);
+        tasksDialogFragment.show(getActivity().getSupportFragmentManager(), "Naur!");
 
     }
     private class sortByCourse implements Comparator<Task>
