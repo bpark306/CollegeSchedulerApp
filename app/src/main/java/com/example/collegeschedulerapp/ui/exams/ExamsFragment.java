@@ -142,6 +142,13 @@ public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam
             myExams.addAll(a.exams);
         }
 
+        if (!filterSwitch.isChecked()) {
+            filterSwitch.setText("Sort by Due Date");
+            Collections.sort(myExams);
+        } else {
+            filterSwitch.setText("Sort by Course");
+        }
+
 
     }
 

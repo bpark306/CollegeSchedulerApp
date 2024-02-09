@@ -21,7 +21,6 @@ import com.example.collegeschedulerapp.Adapter.TaskAdapter;
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private AssignmentAdapter adapter;
-
     private ExamAdapter examAdapter;
     private TaskAdapter taskAdapter;
     CourseAdapter courseAdapter;
@@ -37,12 +36,12 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     }
 
     public RecyclerItemTouchHelper(TaskAdapter taskAdapter) {
-        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        super(0, ItemTouchHelper.RIGHT);
         this.taskAdapter = taskAdapter;
     }
 
     public RecyclerItemTouchHelper(CourseAdapter courseAdapter) {
-        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        super(0, ItemTouchHelper.RIGHT);
         this.courseAdapter = courseAdapter;
     }
 

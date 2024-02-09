@@ -26,6 +26,7 @@ import com.example.collegeschedulerapp.BottomSheetDialog.TasksDialogFragment;
 import com.example.collegeschedulerapp.R;
 import com.example.collegeschedulerapp.RecyclerItemTouchHelper;
 import com.example.collegeschedulerapp.databinding.FragmentTodoBinding;
+import com.example.collegeschedulerapp.internalfiles.Assignment;
 import com.example.collegeschedulerapp.internalfiles.Course;
 
 import com.example.collegeschedulerapp.internalfiles.RecyclerViewInterfaceTask;
@@ -244,6 +245,22 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
         tasksDialogFragment.show(getActivity().getSupportFragmentManager(), "Naur!");
 
     }
+
+    @Override
+    public void toggleCompletedStatus(int position, String name, String course, boolean bool) {
+        loadData();
+        for (Task task: myTasks) {
+            if (task.getName().equals(name)) {
+                task.switchStatus(bool);
+                if (task.returnAssignment() != null) {
+                    task.returnAssignment().setCompleted(bool);
+                }
+            }
+
+        }
+        saveData();
+    }
+
     private class sortByCourse implements Comparator<Task>
 
     {

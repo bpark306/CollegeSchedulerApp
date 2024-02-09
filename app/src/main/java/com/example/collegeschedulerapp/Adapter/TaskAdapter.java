@@ -63,7 +63,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
         holder.name.setText(currentTask.getName());
         holder.course.setText(currentTask.getCourse().name);
         holder.dueDateAndTime.setText(currentTask.getTimeDateDueString());
-        holder.checkBox.setChecked(currentTask.isCompleted());
+        if (currentTask.returnAssignment() != null) {
+            holder.checkBox.setChecked(currentTask.returnAssignment().isCompleted());
+        } else {
+            holder.checkBox.setChecked(currentTask.isCompleted());
+        }
+
     }
 
 
@@ -91,7 +96,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    recyclerViewInterfaceTask.toggleCompletedStatus(getAdapterPosition(), name.getText().toString(), course.getText().toString(), isChecked);
                 }
             });
             dynamicButton.setOnClickListener(new View.OnClickListener() {

@@ -250,10 +250,8 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
     public void confirmInput(View v) {
         if (validateTextInput(courseName)
                 && !alreadyContainsCourse(courseName)
-                && validateTextInput(courseInstructor)
+                && validateTextInput(courseInstructor)) {
 
-
-        ) {
             String meetingTimes = "";
             if (sundayButton.isChecked()) {
                 meetingTimes += "Sun";
@@ -317,6 +315,7 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
                         meetingTimes,
                         startTimeDate,
                         endTimeDate);
+
                 if (selectedPlace != null) {
                     newCourse.setLocation(selectedPlace.getName());
                 }
