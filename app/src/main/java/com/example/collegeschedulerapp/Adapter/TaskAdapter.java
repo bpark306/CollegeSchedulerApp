@@ -102,7 +102,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
                         int position = getAdapterPosition();
 
                         if (position != RecyclerView.NO_POSITION) {
-                            //recyclerViewInterfaceTask.onClick(position, name.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString());
+                            recyclerViewInterfaceTask.onClick(position, name.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString());
                         }
                     }
                 }

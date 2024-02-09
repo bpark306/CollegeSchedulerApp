@@ -52,7 +52,6 @@ public class TasksDialogFragment extends BottomSheetDialogFragment {
     ArrayAdapter<Course> adapaterItem;
     String savedTaskName, savedTaskCourse, dueDateAndTime;
 
-    Task savedTask;
 
 
     public TasksDialogFragment(Context context) {
@@ -170,12 +169,12 @@ public class TasksDialogFragment extends BottomSheetDialogFragment {
                 && validateTextInput(taskCourse)
                 && !alreadyContainsName(selectedCourse, taskName)) {
 
-            if (savedTaskName != null || savedTaskCourse != null || dueDateAndTime != null) {
+            if (savedTaskName != null || savedTaskCourse != null) {
                 //iterate thru ArrayList<Courses>
                 for (int i = 0; i < myTasks.size(); i++) {
 
                     //Found specific assignment with matching name
-                    if (myTasks.get(i).getName().equals(savedTaskName) && myTasks.get(i).getCourse().equals(savedTaskCourse)) {
+                    if (myTasks.get(i).getName().equals(savedTaskName)) {
                         myTasks.remove(i);
                     }
                 }

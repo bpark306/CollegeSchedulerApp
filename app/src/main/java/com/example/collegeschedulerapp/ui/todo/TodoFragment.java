@@ -23,6 +23,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.collegeschedulerapp.Adapter.TaskAdapter;
+import com.example.collegeschedulerapp.BottomSheetDialog.ExamsDialogFragment;
+import com.example.collegeschedulerapp.BottomSheetDialog.TasksDialogFragment;
 import com.example.collegeschedulerapp.R;
 import com.example.collegeschedulerapp.RecyclerItemTouchHelper;
 import com.example.collegeschedulerapp.databinding.FragmentTodoBinding;
@@ -200,8 +202,12 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
     }
 
     @Override
-    public void onClick(int position, String name, String course, String dueDateAndTime, boolean dummy) {
+    public void onClick(int position, String name, String course, String dueDateAndTime) {
         // Implement the edit task
+
+
+        TasksDialogFragment tasksDialogFragment = new TasksDialogFragment(getContext(), name, course, dueDateAndTime);
+        tasksDialogFragment.show(getActivity().getSupportFragmentManager(), "Naur!");
     }
 
     @Override
