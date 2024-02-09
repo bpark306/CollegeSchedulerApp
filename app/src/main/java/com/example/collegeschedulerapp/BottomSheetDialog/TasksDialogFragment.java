@@ -52,6 +52,8 @@ public class TasksDialogFragment extends BottomSheetDialogFragment {
     ArrayAdapter<Course> adapaterItem;
     String savedTaskName, savedTaskCourse, dueDateAndTime;
 
+    Task savedTask;
+
 
 
     public TasksDialogFragment(Context context) {
