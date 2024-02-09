@@ -68,7 +68,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Course current = filteredCourses.get(position);
         holder.instructor.setText("Professor " + current.instructor);
-        holder.courseName.setText(current.name);
+        if (current.section != null) {
+            holder.courseName.setText(current.name +  " - " + current.section);
+        } else {
+            holder.courseName.setText(current.name);
+        }
+
         String formatedMeetingDays = "";
         if (current.getMeetingDays().contains("Sun")) {
             formatedMeetingDays +="Sun";
@@ -106,7 +111,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         if (current.getLocation().equals("N/A")) {
             holder.meetingLocation.setText("Online");
         } else if (current.room == null) {
-
             holder.meetingLocation.setText("At " + current.getLocation());
         } else {
             holder.meetingLocation.setText("At " + current.getLocation() + " in Room " + current.room);

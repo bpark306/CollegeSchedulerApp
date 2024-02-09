@@ -55,7 +55,7 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
     Place selectedPlace;
 
     private Button addCourseButton, cancelCourseButton, startTimeButton, endTimeButton, locationPickerButton;
-    private TextInputLayout courseName, courseSection, courseInstructor;
+    private TextInputLayout courseName, courseSection, courseInstructor, courseRoom;
     Context context;
     BottomSheetBehavior<View> bottomSheetBehavior;
     String markedButtons;
@@ -104,7 +104,7 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
         courseName = rootView.findViewById(R.id.course_name);
         courseSection= rootView.findViewById(R.id.course_section);
         courseInstructor = rootView.findViewById(R.id.course_instructor);
-
+        courseRoom = rootView.findViewById(R.id.room_number);
 
         addCourseButton = rootView.findViewById(R.id.add_course_button);
         cancelCourseButton = rootView.findViewById(R.id.cancel_course_button);
@@ -290,10 +290,17 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
                         a.setMeetingDays(meetingTimes);
                         a.setStartDateTime(startTimeDate);
                         a.setEndDateTime(endTimeDate);
-
+                        if (!courseRoom.getEditText().getText().toString().isEmpty()) {
+                            a.setRoom(courseRoom.getEditText().getText().toString());
+                        }
+                        if (!courseSection.getEditText().getText().toString().isEmpty()) {
+                            a.setSection(courseSection.getEditText().getText().toString());
+                        }
                         if (selectedPlace != null) {
                             a.setLocation(selectedPlace.getName());
                         }
+
+
                         for (Assignment b: a.assignments) {
                             b.setCourse(new Course(name));
                         }
@@ -313,6 +320,13 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
                 if (selectedPlace != null) {
                     newCourse.setLocation(selectedPlace.getName());
                 }
+                if (!courseSection.getEditText().getText().toString().isEmpty()) {
+                    newCourse.setSection(courseSection.getEditText().getText().toString());
+                }
+                if (!courseRoom.getEditText().getText().toString().isEmpty()) {
+                    newCourse.setRoom(courseRoom.getEditText().getText().toString());
+                }
+
                 myCourses.add(newCourse);
             }
             saveData();
