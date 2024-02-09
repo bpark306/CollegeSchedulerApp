@@ -39,7 +39,7 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
 
     private FragmentAssignmentsBinding binding;
 
-    private Switch filterSwitch;
+    private Switch filterSwitch, filterCompleted;
     ItemTouchHelper itemTouchHelper;
     RecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
@@ -57,6 +57,7 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         filterSwitch = binding.getRoot().findViewById(R.id.assignment_filter_switch);
         refreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh);
+        filterCompleted = binding.getRoot().findViewById(R.id.assignment_show_completed);
         View root = binding.getRoot();
 
         return root;
@@ -97,6 +98,15 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 loadData();
                 itemAdapter.updateEmplist(myAssignments);
+                recyclerView.setAdapter(itemAdapter);
+            }
+        });
+
+        filterCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loadData();
+                itemAdapter.updateAssignmentsList(myAssignments, filterCompleted.isChecked());
                 recyclerView.setAdapter(itemAdapter);
             }
         });
@@ -146,6 +156,8 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
             myTasks = new ArrayList<>();
         }
 
+
+
         myAssignments = new ArrayList<>();
 
         for (Course a : myCourses) {
@@ -156,6 +168,19 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
             Collections.sort(myAssignments);
         } else {
             filterSwitch.setText("Sort by Course");
+        }
+
+
+        if (!filterCompleted.isChecked()) {
+            ArrayList<Assignment> nonCompletedAssignments = new ArrayList<>();
+
+            for (int i = 0; i < myAssignments.size(); i++) {
+                if (!myAssignments.get(i).isCompleted()) {
+                    nonCompletedAssignments.add(myAssignments.get(i));
+                }
+            }
+
+            myAssignments = nonCompletedAssignments;
         }
 
     }
@@ -169,8 +194,9 @@ public class AssignmentsFragment extends Fragment implements RecyclerViewInterfa
 
     @Override
     public void onClick(int position, String name, String course, String dueDateAndTime) {
-        AssignmentsDialogFragment assignmentsDialogFragment = new AssignmentsDialogFragment(getContext(), name, course, dueDateAndTime);
-        assignmentsDialogFragment.show(getActivity().getSupportFragmentManager(), "Yay!");
+
+         AssignmentsDialogFragment assignmentsDialogFragment = new AssignmentsDialogFragment(getContext(),name, course);
+         assignmentsDialogFragment.show(getActivity().getSupportFragmentManager(), "Yay!");
 
     }
 }

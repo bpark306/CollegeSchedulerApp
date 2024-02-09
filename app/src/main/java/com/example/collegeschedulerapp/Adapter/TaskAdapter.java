@@ -27,6 +27,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
     private ArrayList<Course> myCourses;
     private ArrayList<Task> myTasks;
 
+
     private Context context;
 
     public TaskAdapter(RecyclerViewInterfaceTask recyclerViewInterfaceTask, Context context, ArrayList<Course> myCourses, ArrayList<Task> myTasks) {
@@ -91,7 +92,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    recyclerViewInterfaceTask.updateTaskWithCheckBoxStatus(getAdapterPosition(), name.getText().toString(), course.getText().toString(), checkBox);
                 }
             });
             dynamicButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
                         int position = getAdapterPosition();
 
                         if (position != RecyclerView.NO_POSITION) {
-                            recyclerViewInterfaceTask.onClick(position, name.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString(), false);
+                            //recyclerViewInterfaceTask.onClick(position, name.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString());
                         }
                     }
                 }
@@ -148,12 +149,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
 
 
 
-    public void sendToDo(int position) {
-        //
-    }
-
     public void updateEmplist(ArrayList<Task> myTasks) {
         this.myTasks = myTasks;
+    }
+
+    public void updateFilteredList(ArrayList<Task> myTasks, boolean requestCompleted) {
+        ArrayList<Task> filteredCompleted = new  ArrayList<>();
+        for (int i = 0; i < myTasks.size(); i++) {
+            if (myTasks.get(i).isCompleted()) {
+                filteredCompleted.add(myTasks.get(i));
+            }
+        }
+
+        myTasks = filteredCompleted;
     }
 
 

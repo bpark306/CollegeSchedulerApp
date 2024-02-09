@@ -32,7 +32,40 @@ public class Course {
     public ArrayList<Assignment> assignments;
     public ArrayList<Exam> exams;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public void setMeetingDays(String meetingDays) {
+        this.meetingDays = meetingDays;
+    }
+
+    public void setStartDateTime(Date startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
     public String name;
+
     public long id;
     public String section;
     public String instructor;

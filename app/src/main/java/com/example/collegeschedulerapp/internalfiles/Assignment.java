@@ -11,6 +11,18 @@ import java.util.Date;
 public class Assignment implements Comparable<Assignment> {
 
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDueDateTime(Date dueDateTime) {
+        this.dueDateTime = dueDateTime;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     String name;
     Date dueDateTime;
     boolean completed;
@@ -21,6 +33,10 @@ public class Assignment implements Comparable<Assignment> {
     }
     public String getName() {
         return name;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
 

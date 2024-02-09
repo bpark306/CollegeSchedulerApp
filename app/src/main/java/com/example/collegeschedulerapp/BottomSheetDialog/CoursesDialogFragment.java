@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.collegeschedulerapp.internalfiles.Assignment;
 import com.example.collegeschedulerapp.internalfiles.Course;
+import com.example.collegeschedulerapp.internalfiles.Exam;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.model.Place;
@@ -57,6 +59,8 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
     Context context;
     BottomSheetBehavior<View> bottomSheetBehavior;
     String markedButtons;
+    TextView dialogTitle;
+    String savedName;
 
     View rootView;
 
@@ -65,6 +69,11 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
     public CoursesDialogFragment(Context context) {
         this.context = context;
     }
+    public CoursesDialogFragment(Context context, String savedName) {
+        this.context = context;
+        this.savedName = savedName;
+    }
+
 
     @Nullable
     @Override
@@ -80,6 +89,7 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
 
         Places.initialize(context, "AIzaSyAhjsp0gs7vVtpCsrc5IHLBwT-835Fczu0");
 
+        dialogTitle = rootView.findViewById(R.id.course_btm_dialog_title);
 
         BottomNavigationView navView = rootView.findViewById(R.id.nav_view);
         sundayButton = (ToggleButton) rootView.findViewById(R.id.tD);
@@ -126,6 +136,11 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
         endTimeButton.setText(timeForm.format(endTimeDate));
 
 
+
+        if (savedName != null) {
+            dialogTitle.setText("EDITING " + savedName);
+            addCourseButton.setText("Edit");
+        }
 
 
         // Initialize the AutocompleteSupportFragment.
@@ -263,17 +278,43 @@ public class CoursesDialogFragment extends BottomSheetDialogFragment {
             }
             Toast.makeText(context, meetingTimes, Toast.LENGTH_SHORT).show();
 
-            Course newCourse = new Course(courseName.getEditText().getText().toString()
-                    ,courseInstructor.getEditText().getText().toString()
-                    ,meetingTimes
-                    ,startTimeDate
-                    ,endTimeDate);
+            String name = courseName.getEditText().getText().toString();
+            String instructor = courseInstructor.getEditText().getText().toString();
 
-            if(selectedPlace != null) {
-                newCourse.setLocation(selectedPlace.getName());
+            if (savedName != null) {
+                for (Course a: myCourses) {
+                    if (a.name.equals(savedName)) {
+
+                        a.setName(name);
+                        a.setInstructor(instructor);
+                        a.setMeetingDays(meetingTimes);
+                        a.setStartDateTime(startTimeDate);
+                        a.setEndDateTime(endTimeDate);
+
+                        if (selectedPlace != null) {
+                            a.setLocation(selectedPlace.getName());
+                        }
+                        for (Assignment b: a.assignments) {
+                            b.setCourse(new Course(name));
+                        }
+                        for (Exam b: a.exams) {
+                            b.setCourse(new Course(name));
+                        }
+                    }
+                }
+
+
+            } else {
+                Course newCourse = new Course(courseName.getEditText().getText().toString(),
+                        courseInstructor.getEditText().getText().toString(),
+                        meetingTimes,
+                        startTimeDate,
+                        endTimeDate);
+                if (selectedPlace != null) {
+                    newCourse.setLocation(selectedPlace.getName());
+                }
+                myCourses.add(newCourse);
             }
-
-            myCourses.add(newCourse);
             saveData();
             dismiss();
         }

@@ -19,6 +19,7 @@ import com.example.collegeschedulerapp.internalfiles.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -93,6 +94,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                         int position = getAdapterPosition();
 
                         if (position != RecyclerView.NO_POSITION) {
+
+
                             recyclerViewInterface.onClick(position, name.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString());
                         }
                     }
@@ -166,5 +169,16 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         this.myAssignments = emplist;
     }
 
+    public void updateAssignmentsList(ArrayList<Assignment> myAssignments, boolean bool) {
+        ArrayList<Assignment> filteredAssignemnts = new  ArrayList<>();
+        for (int i = 0; i < myAssignments.size(); i++) {
+            if (myAssignments.get(i).isCompleted()) {
+                filteredAssignemnts.add(myAssignments.get(i));
+
+            }
+        }
+
+        myAssignments = filteredAssignemnts;
+    }
 
 }

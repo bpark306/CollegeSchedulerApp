@@ -27,6 +27,7 @@ public class Task implements Comparable<Task> {
         return course;
     }
 
+
     String name;
 
     Date dueDateTime;
