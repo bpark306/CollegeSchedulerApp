@@ -141,7 +141,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
                         int position = getAdapterPosition();
 
                         if (position != RecyclerView.NO_POSITION) {
-                            //recyclerViewInterface.onClick(position, courseName.getText().toString(), course.getText().toString(), dueDateAndTime.getText().toString());
+                            recyclerViewInterface.onClick(position, courseName.getText().toString(), "", "");
                         }
                     }
                 }
@@ -189,11 +189,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
 
     public void updateFilteredCourse (ArrayList<Course> myCourses, String filterDay) {
         this.myCourses = myCourses;
-
         filteredCourses = new ArrayList<>();
+
+
         for (int i = 0; i < myCourses.size();i++) {
             if (myCourses.get(i).getMeetingDays().contains(filterDay)) {
                 filteredCourses.add(myCourses.get(i));
+                Toast.makeText(getContext(),filterDay + " is in " + myCourses.get(i).getMeetingDays() + ": "+ myCourses.get(i).getMeetingDays().contains(filterDay), Toast.LENGTH_SHORT).show();
             }
         }
     }

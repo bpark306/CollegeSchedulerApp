@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,8 +35,8 @@ import com.example.collegeschedulerapp.ui.todo.TodoViewModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -111,17 +113,11 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 loadData();
-
-                ArrayList<Task> filteredCompleted = new  ArrayList<>();
-                for (int i = 0; i < myTasks.size(); i++) {
-                    if (myTasks.get(i).isCompleted()) {
-                        filteredCompleted.add(myTasks.get(i));
-                    }
-                }
-                itemAdapter.updateEmplist(filteredCompleted);
+                itemAdapter.updateFilteredList(myTasks, showCompleted.isChecked());
                 recyclerView.setAdapter(itemAdapter);
             }
         });
+
 
 
     }
@@ -170,6 +166,20 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
         }
 
 
+        if (!showCompleted.isChecked()) {
+            ArrayList<Task> nonCompletedTasks = new ArrayList<>();
+
+            for (int i = 0; i < myTasks.size(); i++) {
+                if (!myTasks.get(i).isCompleted()) {
+                    nonCompletedTasks.add(myTasks.get(i));
+                }
+            }
+
+            myTasks = nonCompletedTasks;
+        }
+
+
+
         if (!filterSwitch.isChecked()) {
             filterSwitch.setText("Sort by Due Date");
             myTasks.sort(new sortByDate());
@@ -191,9 +201,28 @@ public class TodoFragment extends Fragment implements RecyclerViewInterfaceTask 
 
     @Override
     public void onClick(int position, String name, String course, String dueDateAndTime, boolean dummy) {
-        int i = 0;
+        // Implement the edit task
+    }
+
+    @Override
+    public void updateTaskWithCheckBoxStatus(int position, String name, String course, CheckBox checkBox) {
+        for (int i = 0; i < myTasks.size(); i++) {
+            //Finds the task in the array of tasks
+            if (myTasks.get(i).getName().equals(name))  {
+                //Sets the task to completed
+                myTasks.get(i).switchStatus(checkBox.isChecked());
+
+                //Sets the task assignment to completed
+                if (myTasks.get(i).returnAssignment() != null) {
+                    myTasks.get(i).returnAssignment().setCompleted(checkBox.isChecked());
+                    Toast.makeText(getContext(), "Task and Assignment Task status to " + checkBox.isChecked(), Toast.LENGTH_SHORT).show();
+                }
+                saveData();
+            }
+        }
 
     }
+
     private class sortByCourse implements Comparator<Task>
 
     {

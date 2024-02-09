@@ -154,8 +154,8 @@ public class ExamsFragment extends Fragment implements RecyclerViewInterfaceExam
 
     @Override
     public void onClick(int position, String name, String course, String dueDateAndTime, String examLocation) {
-        //CoursesDialogFragment courseDialogFragment = new CoursesDialogFragment(getContext());
-        //courseDialogFragment.show(getActivity().getSupportFragmentManager(), "Yay!");
+        ExamsDialogFragment examsDialogFragment = new ExamsDialogFragment(getContext(), name, course,examLocation);
+        examsDialogFragment.show(getActivity().getSupportFragmentManager(), "Naur!");
 
     }
 }

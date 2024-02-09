@@ -72,6 +72,8 @@ public class ExamsDialogFragment extends BottomSheetDialogFragment {
         this.savedExamCourse = savedAssignmentCourse;
         this.examDateAndTime = dueDateAndTime;
     }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -118,9 +120,6 @@ public class ExamsDialogFragment extends BottomSheetDialogFragment {
         });
 
         // Initialize the AutocompleteSupportFragment.
-
-
-
 
         examTimeDate = cal.getTime();
 
@@ -214,31 +213,44 @@ public class ExamsDialogFragment extends BottomSheetDialogFragment {
                 && validateTextInput(examCourse)
                 && !alreadyContainsName(selectedCourse, examName)) {
 
-            if (savedExamName != null || savedExamCourse != null || examDateAndTime != null) {
-                //iterate thru ArrayList<Courses>
-                for (int i = 0; i < myCourses.size(); i++) {
+            String newName = examName.getEditText().getText().toString();
+            if (savedExamName != null && savedExamCourse != null) {
+                if(!selectedCourse.name.equals(savedExamCourse)) {
+                    for (Course a: myCourses) {
+                        if (a.name.equals(savedExamCourse)) {
+                            for (int j = 0; j < a.exams.size(); j++) {
+                                if (a.exams.get(j).getName().equals(savedExamName)){
+                                    a.exams.remove(j);
+                                }
+                            }
+                        }
+                    }
 
-                    //Found specific course with matching name
-                    if (myCourses.get(i).name.equals(savedExamCourse)) {
+                    selectedCourse.exams.add(new Exam(newName,
+                            examTimeDate,
+                            selectedCourse,
+                            (selectedPlace == null) ? null : selectedPlace.getName()));
 
-                        //Iterate thru ArrayList<Assignment
-                        for(int j = 0; j < myCourses.get(i).exams.size(); j++) {
-
-                            //Found specific assignment with matching name
-                            if (myCourses.get(i).exams.get(j).getName().equals(savedExamName)) {
-                                myCourses.get(i).exams.remove(j);
-
+                } else {
+                    for (Course a : myCourses) {
+                        if (a.name.equals(savedExamCourse)) {
+                            for (Exam b : a.exams) {
+                                if (b.getName().equals(savedExamName)) {
+                                    b.setName(newName);
+                                    b.setExamDateTime(examTimeDate);
+                                }
                             }
                         }
                     }
                 }
+
+            } else {
+
+                selectedCourse.exams.add(new Exam(newName,
+                        examTimeDate,
+                        selectedCourse,
+                        (selectedPlace == null) ? null : selectedPlace.getName()));
             }
-
-            selectedCourse.exams.add(new Exam(examName.getEditText().getText().toString(),
-                    examTimeDate,
-                    selectedCourse,
-                    (selectedPlace == null) ? null : selectedPlace.getName()));
-
             saveData();
             dismiss();
         }

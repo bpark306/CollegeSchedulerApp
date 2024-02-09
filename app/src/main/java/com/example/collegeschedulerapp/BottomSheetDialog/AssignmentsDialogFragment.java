@@ -50,18 +50,17 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<Course> adapaterItem;
-    String savedAssignmentName, savedAssignmentCourse, dueDateAndTime;
+    String  savedName, savedCourse;
 
 
     public AssignmentsDialogFragment(Context context) {
         this.context = context;
     }
 
-    public AssignmentsDialogFragment(Context context, String savedAssignmentName, String savedAssignmentCourse, String dueDateAndTime) {
+    public AssignmentsDialogFragment(Context context, String savedName,String savedCourse) {
         this.context = context;
-        this.savedAssignmentName = savedAssignmentName;
-        this.savedAssignmentCourse = savedAssignmentCourse;
-        this.dueDateAndTime = dueDateAndTime;
+        this.savedName = savedName;
+        this.savedCourse = savedCourse;
     }
     @Nullable
     @Override
@@ -87,7 +86,6 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
 
 
-
         dueTimeButton = rootView.findViewById(R.id.due_time_button);
         dueDateButton = rootView.findViewById(R.id.due_date_button);
 
@@ -107,9 +105,9 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
 
 
 
-        if (savedAssignmentName != null || dueDateAndTime != null || savedAssignmentCourse != null) {
+        if (savedName != null && savedCourse != null) {
             addNewAssignment.setText("Edit");
-            assignmentTitle.setText("EDITING " + savedAssignmentName);
+            assignmentTitle.setText("EDITING " + savedName);
         }
 
 
@@ -169,31 +167,46 @@ public class AssignmentsDialogFragment extends BottomSheetDialogFragment {
                 && validateTextInput(assignmentCourse)
                 && !alreadyContainsName(selectedCourse, assignmentName)) {
 
-            if (savedAssignmentName != null || savedAssignmentCourse != null || dueDateAndTime != null) {
-                //iterate thru ArrayList<Courses>
-                for (int i = 0; i < myCourses.size(); i++) {
 
-                    //Found specific course with matching name
-                    if (myCourses.get(i).name.equals(savedAssignmentCourse)) {
+            String name = assignmentName.getEditText().getText().toString();
 
-                        //Iterate thru ArrayList<Assignment
-                        for(int j = 0; j < myCourses.get(i).assignments.size(); j++) {
+            if (savedName != null && savedCourse != null) {
+                if(!selectedCourse.name.equals(savedCourse)) {
+                    for (Course a: myCourses) {
+                        if (a.name.equals(savedCourse)) {
+                           for (int j = 0; j < a.assignments.size(); j++) {
+                               if (a.assignments.get(j).getName().equals(savedName)){
+                                   a.assignments.remove(j);
+                               }
+                           }
+                        }
+                    }
 
-                            //Found specific assignment with matching name
-                            if (myCourses.get(i).assignments.get(j).getName().equals(savedAssignmentName)) {
-                                myCourses.get(i).assignments.remove(j);
+                    selectedCourse.assignments.add(new Assignment(name,
+                            dueTimeDate,
+                            false,
+                            selectedCourse));
 
+                } else {
+                    for (Course a : myCourses) {
+                        if (a.name.equals(savedCourse)) {
+                            for (Assignment b : a.assignments) {
+                                if (b.getName().equals(savedName)) {
+                                    b.setName(name);
+                                    b.setDueDateTime(dueTimeDate);
+                                }
                             }
                         }
                     }
                 }
+
+            } else {
+
+                selectedCourse.assignments.add(new Assignment(name,
+                        dueTimeDate,
+                        false,
+                        selectedCourse));
             }
-
-            selectedCourse.assignments.add(new Assignment(assignmentName.getEditText().getText().toString(),
-                    dueTimeDate,
-                    false,
-                    selectedCourse));
-
             saveData();
             dismiss();
         }

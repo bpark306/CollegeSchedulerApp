@@ -8,6 +8,22 @@ public class Exam implements Comparable<Exam>{
         return examDateTime;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setExamDateTime(Date examDateTime) {
+        this.examDateTime = examDateTime;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     String name;
     Date examDateTime;
     String location;

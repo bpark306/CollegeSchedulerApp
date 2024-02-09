@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegeschedulerapp.Adapter.CourseAdapter;
 import com.example.collegeschedulerapp.Adapter.ExamAdapter;
+import com.example.collegeschedulerapp.BottomSheetDialog.AssignmentsDialogFragment;
+import com.example.collegeschedulerapp.BottomSheetDialog.CoursesDialogFragment;
 import com.example.collegeschedulerapp.R;
 import com.example.collegeschedulerapp.RecyclerItemTouchHelper;
 import com.example.collegeschedulerapp.databinding.FragmentCoursesBinding;
@@ -61,7 +63,7 @@ public class CoursesFragment extends Fragment implements RecyclerViewInterface {
         super.onViewCreated(view, savedInstanceState);
 
         loadData();
-
+        itemAdapter = new CourseAdapter(this, getContext(), myCourses, "");
         BottomNavigationView navView = binding.getRoot().findViewById(R.id.nav_view);
         sundayButton = binding.getRoot().findViewById(R.id.course_sun);
         mondayButton = binding.getRoot().findViewById(R.id.course_mon);
@@ -72,7 +74,6 @@ public class CoursesFragment extends Fragment implements RecyclerViewInterface {
         saturdayButton = binding.getRoot().findViewById(R.id.course_sat);
 
 
-         itemAdapter = new CourseAdapter(this, getContext(), myCourses, "");
 
 
         // Set the LayoutManager that
@@ -81,6 +82,7 @@ public class CoursesFragment extends Fragment implements RecyclerViewInterface {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(itemAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setAdapter(itemAdapter);
 
         sundayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,14 +166,16 @@ public class CoursesFragment extends Fragment implements RecyclerViewInterface {
         fridayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 loadData();
                 itemAdapter.updateFilteredCourse(myCourses,
                         fridayButton.isChecked() ? "Fri" : "");
+                fridayButton.setChecked(true);
                 sundayButton.setChecked(false);
                 mondayButton.setChecked(false);
                 tuesdayButton.setChecked(false);
                 wednesdayButton.setChecked(false);
-                thursdayButton .setChecked(false);
+                thursdayButton.setChecked(false);
                 saturdayButton.setChecked(false);
             }
         });
@@ -233,7 +237,9 @@ public class CoursesFragment extends Fragment implements RecyclerViewInterface {
 
     @Override
     public void onClick(int position, String name, String course, String dueDateAndTime) {
-        int i = 0;
+        CoursesDialogFragment coursesDialogFragment = new CoursesDialogFragment(getContext(),name);
+        coursesDialogFragment.show(getActivity().getSupportFragmentManager(), "Noo!");
+
     }
 }
 
